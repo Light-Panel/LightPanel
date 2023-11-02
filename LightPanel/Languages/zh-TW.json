@@ -1,0 +1,34 @@
+{
+  "info": {
+    "name": "繁體中文",
+    "flag": "🇹🇼"
+  },
+  "content": {
+    "server": {
+      "log": {
+        "running": "運行",
+        "complete": "完成",
+        "warn": "警告",
+        "error": "錯誤",
+        "hint": "提示",
+
+        "- Light Panel -\n\n版本: {version}\n平台: {platform}\n\n面板端口: {port}\n": "- Light Panel -\n\n版本: {version}\n平台: {platform}\n\n面板端口: {port}\n",
+
+        "正在啟動伺服器 (端口: {port})": "正在啟動伺服器 (端口: {port})",
+        "成功啟動伺服器 (花費: {time}ms)": "成功啟動伺服器 (花費: {time}ms)"
+      },
+      "error": {
+        "找不到資料夾 {path}": "找不到資料夾 {path}",
+        "{path} 不是一個資料夾": "{path} 不是一個資料夾",
+        "找不到日誌類型 ${type}": "找不到日誌類型 ${type}"
+      }
+    },
+    "app": {
+      "log": {
+        "面板": "面板",
+        
+        "網頁加載完成 (花費: {time}ms)": "網頁加載完成 (花費: {time}ms)"
+      }
+    }
+  }
+}
