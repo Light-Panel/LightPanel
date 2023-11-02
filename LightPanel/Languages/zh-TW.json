@@ -15,7 +15,8 @@
         "- Light Panel -\n\n版本: {version}\n平台: {platform}\n\n面板端口: {port}\n": "- Light Panel -\n\n版本: {version}\n平台: {platform}\n\n面板端口: {port}\n",
 
         "正在啟動伺服器 (端口: {port})": "正在啟動伺服器 (端口: {port})",
-        "成功啟動伺服器 (花費: {time}ms)": "成功啟動伺服器 (花費: {time}ms)"
+        "成功啟動伺服器 (花費: {time}ms)": "成功啟動伺服器 (花費: {time}ms)",
+        "檢測到 DoS 攻擊，將在未來的 5 分鐘內阻擋來自 {address} 的請求 (平均每秒 {averageRequestPerSecond} 個請求)": "檢測到 DoS 攻擊，將在未來的 5 分鐘內阻擋來自 {address} 的請求 (平均每秒 {averageRequestPerSecond} 個請求)"
       },
       "error": {
         "找不到資料夾 {path}": "找不到資料夾 {path}",
@@ -28,6 +29,15 @@
         "面板": "面板",
         
         "網頁加載完成 (花費: {time}ms)": "網頁加載完成 (花費: {time}ms)"
+      },
+      "ui": {
+        "容器": "容器",
+        "範本": "範本",
+        "用戶管理": "用戶管理",
+        "設定": "設定",
+
+        "搜尋容器": "搜尋容器",
+        "創建容器": "創建容器"
       }
     }
   }

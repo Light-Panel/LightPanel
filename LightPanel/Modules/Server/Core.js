@@ -29,7 +29,8 @@ module.exports = class {
     this.checkFiles()
 
     this.log('hint', getTranslation('log>>- Light Panel -\n\n版本: {version}\n平台: {platform}\n\n面板端口: {port}\n', { version: this.#info.version, platform: os.platform(), port: this.#options.port }))
-
+    
+    this.account = new Account(this)
     this.httpServer = startHttpServer(this)
   }
 
@@ -62,3 +63,4 @@ const { loadTranslation, getTranslation } = require('./Tools/Translation')
 const getPath = require('./Tools/GetPath')
 
 const startHttpServer = require('./HttpServer')
+const Account = require('./Account')

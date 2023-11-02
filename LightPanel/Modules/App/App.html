@@ -59,10 +59,9 @@
     div3.appendChild(Component.div({ id: 'page', style: { flex: 'flex', flexDirection: 'column', center: 'column', width: 'calc(100vw - [10ps])' }}))
   
     console.log(`[${getTranslation('log>>面板')}]: ${getTranslation('log>>網頁加載完成 (花費: {time}ms)', { time: Math.round(performance.now()-start) })}`)
-  
-    console.log(window.location.pathname)
 
-    if (window.location.pathname === '/') loadPage()
+    if (window.location.pathname === '/') loadPage('/Containers')
+    else loadPage(`${window.location.pathname}${(window.location.search === '') ? '' : window.location.search}`)
   </script>
 
   <script type="module">

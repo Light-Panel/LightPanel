@@ -4,11 +4,11 @@ const fs = require('fs')
 const getPath = require('./Modules/Server/Tools/GetPath')
 
 if (!fs.existsSync(getPath(__dirname, ['node_modules']))) {
-  console.log('Installing Packages')
+  console.log('Installing packages')
 
   execSync(`cd "${__dirname}" && npm i`)
 
-  console.log('Installation Complete, Please Restart The Process')
+  console.log('Installation complete, please restart the process')
   
   process.exit()
 }

@@ -22,7 +22,7 @@ customElements.define('svg-image', class extends HTMLElement {
   
       let image = this.appendChild(createElement('div', { innerHTML: response })).children[0]
       
-      applyStyle(image.style, this.style)
+      if (image !== undefined) applyStyle(image.style, this.style)
       
       try {
         this.outerHTML = image.outerHTML
@@ -36,8 +36,8 @@ customElements.define('svg-image', class extends HTMLElement {
       let response = await (await fetch(newValue)).text()
   
       let image = this.appendChild(createElement('div', { innerHTML: response })).children[0]
-      
-      applyStyle(image.style, this.style)
+
+      if (image !== undefined) applyStyle(image.style, this.style)
       
       try {
         this.outerHTML = image.outerHTML
