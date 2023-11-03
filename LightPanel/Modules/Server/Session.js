@@ -34,8 +34,8 @@ module.exports = class {
   }
 
   //Check If Session Exist
-  checkSession (id) {
-    return this.data[id] !== undefined
+  checkSession (sessionID) {
+    return this.data[sessionID] !== undefined
   }
 }
 

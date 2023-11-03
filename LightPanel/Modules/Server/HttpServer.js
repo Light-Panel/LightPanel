@@ -17,7 +17,7 @@ module.exports = (core) => {
       if (reqPath[0] === 'Api') {
         let query = url.parse(req.url, true).query
 
-        if (reqPath[1] === 'checkSession'){}
+        if (reqPath[1] === 'CheckSession') res.end(JSON.stringify(core.session.checkSession(query.sessionID)))
       } else if (reqPath[0] === 'Script') {
         if (fs.existsSync(getPath(__dirname, ['<', 'App', 'Scripts', reqPath[1]]))) {
           res.setHeader('Content-Type', 'text/javascript')
@@ -51,7 +51,7 @@ module.exports = (core) => {
           res.end(fs.readFileSync(getPath(__dirname, ['<', 'App', 'Pages', `${reqPath[1]}.js`])))
         } else res.end('Resource Not Found')
       } else res.end(fs.readFileSync(getPath(__dirname, ['<', 'App', 'App.html']))) 
-    } else res.end('Request Blocked')
+    } else req.socket.destroy()
   })
 
   server.listen(core.options.port, () => core.log('complete', getTranslation('log>>成功啟動伺服器 (花費: {time}ms)', { time: Math.round(performance.now()-start) })))
@@ -64,22 +64,28 @@ module.exports = (core) => {
       if (client[item].block) {
         //5 Minute
         if (performance.now()-client[item].blockStart > 300000) {
+          core.log('warn', getTranslation('log>>已解封 {address}', { address: item }))
+
           client[item].block = false
           client[item].blockStart = undefined
         }
       } else {
-        client[item].record.push(client[item].count)
+        //5 Minute
+        if (performance.now()-client[item].lastActiveTime > 300000) delete client[item]
+        else {
+          client[item].record.push(client[item].count)
 
-        if (client[item].record.length > 10) client[item].record.splice(0, 1)
+          if (client[item].record.length > 10) client[item].record.splice(0, 1)
+    
+          if (client[item].count > 30 || (client[item].record.length === 10 && client[item].record.reduce((a, b) => a+b)/client[item].record.length > 25)) {
+            core.log('warn', getTranslation('log>>檢測到 DoS 攻擊，將在未來的 5 分鐘內阻擋來自 {address} 的請求 (平均每秒 {averageRequestPerSecond} 個請求)', { address: item, averageRequestPerSecond: Math.round(client[item].record.reduce((a, b) => a+b)/client[item].record.length) }))
+            
+            client[item].block = true
+            client[item].blockStart = performance.now()
+            client[item].record = []
+          }
   
-        client[item].count = 0
-  
-        if (client[item].record.length === 10 && client[item].record.reduce((a, b) => a+b)/client[item].record.length > 25) {
-          core.log('warn', getTranslation('log>>檢測到 DoS 攻擊，將在未來的 5 分鐘內阻擋來自 {address} 的請求 (平均每秒 {averageRequestPerSecond} 個請求)', { address: item, averageRequestPerSecond: Math.round(client[item].record.reduce((a, b) => a+b)/client[item].record.length) }))
-          
-          client[item].block = true
-          client[item].blockStart = performance.now()
-          client[item].record = []
+          client[item].count = 0
         }
       }
     })
@@ -87,9 +93,12 @@ module.exports = (core) => {
 
   //Check Is Client Sending To Many Request
   function checkClient (address) {
-    if (client[address] === undefined) client[address] = { block: false, blockStart: undefined, record: [], count: 0 }
+    if (client[address] === undefined) client[address] = { block: false, blockStart: undefined, record: [], count: 0, lastActiveTime: performance.now() }
     else if (client[address].block) return false
-    else client[address].count++
+    else {
+      client[address].count++
+      client[address].lastActiveTime = performance.now()
+    }
 
     return true
   }
