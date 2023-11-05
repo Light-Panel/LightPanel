@@ -1,0 +1,14 @@
+:root {
+  --background: #1A1C25;
+
+  --mainColor: #2A2D3C;
+  --mainColor_border: #35384B;
+  --mainColor_dark: #252734;
+  --subColor: #21232F;
+  --subColor_border: #2B2E3D;
+
+  --textColor: #E3E4EB;
+  --subTextColor: #000000;
+
+  --errorColor: #FF0000;
+}
