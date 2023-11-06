@@ -3,7 +3,7 @@ const fs = require('fs')
 
 if (['linux', 'win32', 'darwin'].includes(os.platform())) {
   (async () => {
-    console.log('Downloading Light Panel')
+    console.log('Installing Light Panel')
 
     let files = {}
   
@@ -12,7 +12,7 @@ if (['linux', 'win32', 'darwin'].includes(os.platform())) {
     async function getDirectory (parent, url) {
       let response = await (await fetch(url)).json()
 
-      if (response.message === "API rate limit exceeded for 111.255.21.222. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)") throw new Error('Github Rate Limit (Please Try Again Later)')
+      if (response.message.includes("API rate limit exceeded"))
   
       for (let item of response) {
         if (item.type === 'file') parent[item.name] = item.url
