@@ -1,7 +1,7 @@
 const os = require('os')
 const fs = require('fs')
 
-if (['linux', 'win32'].includes(os.platform())) {
+if (['linux', 'win32', 'darwin'].includes(os.platform())) {
   (async () => {
     console.log('Downloading Light Panel')
 
