@@ -31,7 +31,7 @@ if (['linux', 'win32'].includes(os.platform())) {
     }
   
     let installPath = getPath(process.cwd(), ['LightPanel-Data'])
-    if (fs.existsSync(installPath)) fs.rmdirSync(installPath, { recursive: true })
+    if (fs.existsSync(installPath)) fs.rmSync(installPath, { recursive: true })
     fs.mkdirSync(installPath)
     
     let downloadedFileAmount = 0
@@ -68,8 +68,8 @@ function log (string) {
 function progress (value) {
   let string = ''
 
-  for (let i = 0; i < value/10; i++) string+='|'
-  while (string.length < 10) string+='-'
+  for (let i = 0; i < value/5; i++) string+='|'
+  while (string.length < 20) string+='-'
 
   return `[ ${string} ]`
 }
