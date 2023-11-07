@@ -12,15 +12,11 @@
 ## 安裝
 
 > [!NOTE]
-> 使用以下的指令將會安裝 Light Panel 在你所在的目錄，你可以隨意更改工作目錄到你想要安裝的地方。
+> 使用以下的指令將會安裝 Light Panel 到你所在的目錄，你可以隨意更改工作目錄到你想要安裝的地方。
 
-**Linux**
+**Linux / Windows**
 ```
 curl https://raw.githubusercontent.com/Light-Panel/LightPanel/main/Install.js | node
-```
-
-**Windows**
-```
 ```
 
 **MacOS**
