@@ -3,7 +3,7 @@ module.exports = class {
   #core
 
   constructor (core) {
-    this.core = core
+    this.#core = core
 
     this.data = {}
 

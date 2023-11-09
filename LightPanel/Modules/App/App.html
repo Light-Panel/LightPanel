@@ -35,6 +35,14 @@
     .hover_select_option:hover {
       opacity: 1;
     }
+
+    .hover_reset {
+      transition-duration: 0.5s
+    }
+
+    .hover_reset:hover {
+      transform: rotate(90deg)
+    }
   </style>
   
   <body style="position: fixed; background-color: var(--background); margin: 0px"></body>
@@ -45,7 +53,7 @@
     let start = performance.now()
 
     import { loadTranslation, getTranslation } from '/Script/Translation.js'
-    import { Component, setAttribute } from '/Script/UI.js'
+    import { Component, FontSize, setAttribute } from '/Script/UI.js'
     import { checkSession } from '/Script/Session.js'
     import { loadPage } from '/Script/PageAPI.js'
     import { loadTheme } from '/Script/Theme.js'
@@ -54,14 +62,14 @@
     await loadTheme()
 
     let div = document.body.appendChild(Component.div({ style: { center: 'column', backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderStyle: 'none none solid none', boxSizing: 'border-box', height: '[3.5ps]' }}))
-    div.appendChild(Component.text(1.5, 'Light Panel', { style: { marginLeft: '[1ps]', cursor: 'pointer' }}))
+    div.appendChild(Component.text(FontSize.title, 'Light Panel', { style: { marginLeft: '[1ps]', cursor: 'pointer' }}))
     let div2 = div.appendChild(Component.div({ style: { flex: 1, display: 'flex', flexDirection: 'row-reverse' }}))
     div2.appendChild(Component.svgImage('/Image/Logout.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
     div2.appendChild(Component.svgImage('/Image/Language.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
 
     let div3 = document.body.appendChild(Component.div({ style: { display: 'flex', width: '100vw', height: 'calc(100vh - [3.5ps])' }}))
-    div3.appendChild(Component.div({ id: 'features', style: { flex: 'flex', flexDirection: 'column', backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderStyle: 'none solid none none', boxSizing: 'border-box', width: '[10ps]' }}))
-    div3.appendChild(Component.div({ id: 'page', style: { flex: 'flex', flexDirection: 'column', center: 'column', width: 'calc(100vw - [10ps])' }}))
+    div3.appendChild(Component.div({ id: 'features', style: { flex: 'flex', flexDirection: 'column', backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderStyle: 'none solid none none', boxSizing: 'border-box', width: '[11ps]' }}))
+    div3.appendChild(Component.div({ id: 'page', style: { flex: 'flex', flexDirection: 'column', center: 'column', width: 'calc(100vw - [11ps])', overflowX: 'hidden', overflowY: 'auto' }}))
     
     document.body.appendChild(Component.div({ id: 'promptMessages', style: { position: 'fixed', left: '0px', top: '0px', height: '100vh', overflow: 'hidden', zIndex: 999 }}))
   
@@ -69,8 +77,8 @@
   
     await checkSession()
 
-    if (window.location.pathname === '/') loadPage('/Containers')
-    else loadPage(`${window.location.pathname}${(window.location.search === '') ? '' : window.location.search}`)
+    if (window.location.pathname === '/') loadPage('Containers')
+    else loadPage(`${window.location.pathname.substring(1, window.location.pathname.length)}${(window.location.search === '') ? '' : window.location.search}`)
   </script>
   
   <!-- <script type="module">

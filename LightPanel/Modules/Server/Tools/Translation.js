@@ -2,15 +2,16 @@ const fs = require('fs')
 
 module.exports = { loadTranslation, getTranslation }
 
+const applyParameters = require('./ApplyParameters')
 const getPath = require('./GetPath')
 
 let data
 
 //Load Translation
 function loadTranslation (language) {
-  if (!fs.existsSync(getPath(__dirname, ['<', '<', '<', 'Languages', `${language}.json`]))) throw new Error(`Language Not Found: "${language}"`)
+  if (!fs.existsSync(getPath(__dirname, ['<', '<', '<', 'Data', 'Languages', `${language}.json`]))) throw new Error(`Language Not Found: "${language}"`)
   
-  data = JSON.parse(fs.readFileSync(getPath(__dirname, ['<', '<', '<', 'Languages', `${language}.json`])))
+  data = JSON.parse(fs.readFileSync(getPath(__dirname, ['<', '<', '<', 'Data', 'Languages', `${language}.json`])))
 }
 
 //Get Translation
@@ -28,7 +29,7 @@ function getTranslation (path, parameters) {
   if (target === undefined) throw new Error(`Translation Not Found (${path})`)
   if (typeof target !== 'string') throw new Error (`This Path Is A Category (${path})`)
   
-  if (parameters !== undefined) Object.keys(parameters).forEach((item) => target = target.replaceAll(`{${item}}`, parameters[item]))
+  if (parameters !== undefined) target = applyParameters(target, parameters)
 
   return target
 }

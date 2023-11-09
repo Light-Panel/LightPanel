@@ -14,8 +14,14 @@ module.exports = (core, httpServer) => {
         let request = JSON.parse(decrypt(session.secret, data))
         let response
 
-        if (request.type === 'getPanelInfo') {
+        if (request.type === 'getPanelInfo') response = core.info
+        else if (request.type === 'getAllTemplates') response = core.template.getAllTemplates()
+        else if (request.type === 'getTemplate') response = core.template.getTemplate(request.name)
+        else if (request.type === 'getAccountInfo') response = core.account.getAccountInfo(session.accountName)
 
+        else if (request.type === 'createContainer') {
+          if (core.account.getAccountInfo(session.accountName).permissions.includes('manageContainers')) response = core.container.createContainer(request.name, request.template, request.templateParameters, request.maxCPU, request.maxMemory, request.networkPort)
+          else response = { error: true, content: 'Permission Denied' }
         }
 
         client.emit('response', encrypt(session.secret, JSON.stringify({ data: response, requestID: request.requestID })))

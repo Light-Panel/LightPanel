@@ -24,12 +24,15 @@ module.exports = class {
     if (!fs.statSync(path).isDirectory()) throw new Error(getTranslation('error>>{path} 不是一個資料夾', { path }))
 
     this.#path = path
-    this.#info = JSON.parse(fs.readFileSync(getPath(__dirname, ['<', 'Info.json']))).assign({ os: os.platform(), toltalMemory: os.totalmem()/1000000 })
+    this.#info = Object.assign(JSON.parse(fs.readFileSync(getPath(__dirname, ['<', 'Info.json']))), { platform: os.platform(), toltalMemory: Math.round(os.totalmem()/1000000) })
 
     this.checkFiles()
 
+    console.log('')
     this.log('hint', getTranslation('log>>- Light Panel -\n\n版本: {version}\n平台: {platform}\n\n面板端口: {port}\n', { version: this.#info.version, platform: os.platform(), port: this.#options.port }))
     
+    this.template = new Template(this)
+    this.container = new Container(this)
     this.account = new Account(this)
     this.session = new Session(this)
 
@@ -55,8 +58,13 @@ module.exports = class {
 
     if (!fs.existsSync(getPath(this.#path, ['Secret.json']))) fs.writeFileSync(getPath(this.#path, ['Secret.json']), JSON.stringify({ secret: crypto.randomBytes(32), iv: crypto.randomBytes(16) }))
     if (!fs.existsSync(getPath(this.#path, ['Accounts.txt']))) fs.writeFileSync(getPath(this.#path, ['Accounts.txt']), '')
+    if (!fs.existsSync(getPath(this.#path, ['TemplatesInfo.json']))) fs.writeFileSync(getPath(this.#path, ['TemplatesInfo.json']), '{}')
     if (!fs.existsSync(getPath(this.#path, ['Containers.json']))) fs.writeFileSync(getPath(this.#path, ['Containers.json']), '{}')
-    if (!fs.existsSync(getPath(this.#path, ['Templates']))) fs.mkdirSync(getPath(this.#path, ['Templates']))
+    if (!fs.existsSync(getPath(this.#path, ['Templates']))) {
+      fs.mkdirSync(getPath(this.#path, ['Templates']))
+      fs.readdirSync(getPath(__dirname, ['<', '<', 'Data', 'Templates'])).forEach((item) => fs.writeFileSync(getPath(this.#path, ['Templates', item]), fs.readFileSync(getPath(__dirname, ['<', '<', 'Data', 'Templates', item]))))
+    }
+    if (!fs.existsSync(getPath(this.#path, ['TemplatesBuildData']))) fs.mkdirSync(getPath(this.#path, ['TemplatesBuildData']))
     if (!fs.existsSync(getPath(this.#path, ['Containers']))) fs.mkdirSync(getPath(this.#path, ['Containers']))
     if (!fs.existsSync(getPath(this.#path, ['Themes']))) fs.mkdirSync(getPath(this.#path, ['Themes']))
   }
@@ -67,5 +75,7 @@ const getPath = require('./Tools/GetPath')
 
 const startSocketServer = require('./SocketServer')
 const startHttpServer = require('./HttpServer')
+const Container = require('./Container')
+const Template = require('./Template')
 const Session = require('./Session')
 const Account = require('./Account')

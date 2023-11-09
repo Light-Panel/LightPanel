@@ -13,6 +13,5 @@ module.exports = (basePath, move) => {
 }
 
 let pathSymbol
-if (os.platform() === 'linux' || os.platform() === 'darwin') pathSymbol = '/'
+if (os.platform() === 'linux') pathSymbol = '/'
 else if (os.platform() === 'win32') pathSymbol = '\\'
-else throw new Error(`Unsupported Platform: [${os.platform()}]`)

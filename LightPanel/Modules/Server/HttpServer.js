@@ -30,8 +30,8 @@ module.exports = (core) => {
           res.end(fs.readFileSync(getPath(__dirname, ['<', '<', 'node_modules'].concat(reqPath.slice(1, reqPath.length)))))
         } else res.end('Resource Not Found')
       } else if (reqPath[0] === 'Language') {
-        if (fs.existsSync(getPath(__dirname, ['<', '<', 'Languages', `${reqPath[1]}.json`]))) {
-          let data = JSON.parse(fs.readFileSync(getPath(__dirname, ['<', '<', 'Languages', `${reqPath[1]}.json`])))
+        if (fs.existsSync(getPath(__dirname, ['<', '<', 'Data', 'Languages', `${reqPath[1]}.json`]))) {
+          let data = JSON.parse(fs.readFileSync(getPath(__dirname, ['<', '<', 'Data', 'Languages', `${reqPath[1]}.json`])))
 
           res.end(JSON.stringify({ info: data.info, content: data.content.app }))
         } else res.end('Resource Not Found')

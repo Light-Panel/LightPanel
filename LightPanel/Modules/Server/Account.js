@@ -48,13 +48,13 @@ module.exports = class {
   }
 
   //Create Account
-  createAccount (name, password, permission) {
+  createAccount (name, password, permissions) {
     if (this.data.accounts[name] !== undefined) return { error: true, content: 'Duplicate Account Name' }
 
     this.data.accounts[name] = {
       password: encrypt(this.data.secret, this.data.iv, password),
 
-      permission,
+      permissions,
       containers: [],
 
       shortcuts: {}
@@ -68,6 +68,17 @@ module.exports = class {
     if (this.data.accounts[name] === undefined) return { error: true, content: 'Account Not Found' }
     else if (password !== decrypt(Buffer.from(this.data.secret), Buffer.from(this.data.iv), this.data.accounts[name].password)) return { error: true, content: 'Wrong Password' }
     else return { error: false, session: this.#core.session.createSession(name) }
+  }
+
+  //Get Account Info
+  getAccountInfo (name) {
+    if (this.data.accounts[name] === undefined) return undefined
+    else {
+      return {
+        permissions: this.data.accounts[name].permissions,
+        containers: (this.data.accounts[name].permissions.includes('manageContainers')) ? [] : this.data.accounts[name].containers
+      }
+    }
   }
 }
 

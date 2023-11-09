@@ -1,11 +1,11 @@
 import createElement from '/Script/CreateElement.js'
 
-export { Component, setAttribute } 
+export { Component, FontSize, setAttribute } 
 
 class Component {
   //Test
   static text (fontSize, text, options) {
-    return createElement('h1', parseOptions({ innerHTML: text, style: { color: 'var(--textColor)', fontSize: `[${fontSize}ps]`, margin: '0px' }}, options))
+    return createElement('h1', parseOptions({ innerHTML: text, style: { color: 'var(--textColor)', fontSize: (typeof fontSize === 'number') ? `[${fontSize}ps]` : fontSize, margin: '0px' }}, options))
   }
 
   //Url Text
@@ -22,7 +22,7 @@ class Component {
 
   //Svg Image
   static svgImage (src, options) {
-    let element = createElement('svg-image', parseOptions(options, { style: { color: 'var(--textColor)' }}))
+    let element = createElement('svg-image', parseOptions({ style: { color: 'var(--textColor)' }}, options))
 
     element.setAttribute('src', src)
 
@@ -31,11 +31,11 @@ class Component {
 
   //Button
   static button (label, callback, options) {
-    let element = createElement('button', parseOptions({ class: 'hover_button', innerHTML: label, style: { outline: 'none', backgroundColor: 'var(--mainColor)', color: 'var(--textColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', fontSize: '[0.75ps]', padding: '[0.425ps]', paddingLeft: '[0.5ps]', paddingRight: '[0.5ps]', transitionDuration: '0.5s', cursor: 'pointer' }}, options))
+    let element = createElement('button', parseOptions({ class: 'hover_button', innerHTML: label, style: { outline: 'none', backgroundColor: 'var(--mainColor)', color: 'var(--textColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', fontSize: FontSize.subTitle, padding: '[0.425ps]', paddingLeft: '[0.5ps]', paddingRight: '[0.5ps]', transitionDuration: '0.5s', cursor: 'pointer' }}, options))
     
     element.addEventListener('mouseover', () => element.style.backgroundColor = 'var(--mainColor_dark)')
     element.addEventListener('mouseleave', () => element.style.backgroundColor = 'var(--mainColor)')
-    element.addEventListener('click', () => callback())
+    element.addEventListener('click', () => callback(element))
 
     return element
   }
@@ -46,14 +46,14 @@ class Component {
 
     let div = createElement('div', parseOptions({ style: { backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', transitionDuration: '0.5s', cursor: 'pointer', overflow: 'hidden' }}, options.main))
     let div2 = div.appendChild(createElement('div', { style: { display: 'flex' }}))
-    let selected = div2.appendChild(createElement('h1', parseOptions({ innerHTML: (placeholder === undefined) ? '' : placeholder, style: { flex: 1, color: 'var(--textColor)', fontSize: '[0.75ps]', whiteSpace: 'nowrap', margin: '0px', padding: '[0.3ps]', paddingLeft: '[0.5ps]' }}, options.selected)))
+    let selected = div2.appendChild(createElement('h1', parseOptions({ innerHTML: (placeholder === undefined) ? '' : placeholder, style: { flex: 1, color: 'var(--textColor)', fontSize: FontSize.subTitle, whiteSpace: 'nowrap', margin: '0px', padding: '[0.42ps]', paddingLeft: '[0.5ps]' }}, options.selected)))
     let div3 = div2.appendChild(createElement('div', parseOptions({ style: { display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: `[0.3ps]`, transitionDuration: '0.5s' }})))
     let image = div3.appendChild(createElement('svg-image', parseOptions({ style: { color: 'var(--textColor)', width: selected.style.fontSize }}, options.image)))
     image.setAttribute('src', '/Image/CaretUp.svg')
     let div4 = div.appendChild(createElement('div', parseOptions({ style: { backgroundColor: 'var(--mainColor_dark)', width: div.style.width, height: '0px', transitionDuration: '0.5s', overflowY: 'scroll' }}, options.options)))
     
     items.forEach((item, index) => {
-      let option = div4.appendChild(createElement('h1', parseOptions({ class: 'hover_select_option', innerHTML: item.label, style: { color: 'var(--textColor)', fontSize: `calc(${selected.style.fontSize} * 0.8)`, margin: '0px', marginLeft: '[0.5ps]', marginTop: (index === 0) ? '[0.25ps]' : '[0.25ps]', marginBottom: (index === items.length-1) ? '[0.25ps]' : '0px' }}, options.option)))
+      let option = div4.appendChild(createElement('h1', parseOptions({ class: 'hover_select_option', innerHTML: item.label, style: { color: 'var(--textColor)', fontSize: selected.style.fontSize, margin: '0px', marginLeft: '[0.5ps]', marginTop: (index === 0) ? '[0.25ps]' : '[0.25ps]', marginBottom: (index === items.length-1) ? '[0.25ps]' : '0px' }}, options.option)))
     
       option.onclick = () => {
         div.value = item.value
@@ -90,7 +90,7 @@ class Component {
 
   //Input
   static input (type, value, options, placeholder) {
-    let input = createElement('input', parseOptions({ type, value, style: { outline: 'none', backgroundColor: 'var(--mainColor_dark)', color: 'var(--textColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', fontSize: '[0.75ps]', padding: '[0.425ps]', paddingLeft: '[0.5ps]', paddingRight: '[0.5ps]', transitionDuration: '0.5s' }}, options))
+    let input = createElement('input', parseOptions({ type, value, style: { outline: 'none', backgroundColor: 'var(--mainColor_dark)', color: 'var(--textColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', fontSize: FontSize.subTitle, padding: '[0.425ps]', paddingLeft: '[0.5ps]', paddingRight: '[0.5ps]', transitionDuration: '0.5s' }}, options))
 
     if (placeholder !== undefined) input.placeholder = placeholder
 
@@ -104,6 +104,15 @@ class Component {
   static div (options) {
     return createElement('div', parseOptions(options))
   }
+}
+
+//Font Sizes
+class FontSize {
+  static get title () {return '[1.5ps]'}
+  static get title2 () {return '[1.2ps]'}
+  static get title3 () {return '[0.9ps]'}
+  static get subTitle () {return '[0.75ps]'}
+  static get subTitle2 () {return '[0.7ps]'}
 }
 
 //Parse Options
