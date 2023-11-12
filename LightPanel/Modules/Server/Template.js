@@ -40,6 +40,12 @@ module.exports = class {
       } else if (this.data[name].state === 'building') this.buildTemplate(name, data)
     })
 
+    let ids = Object.keys(this.data).map((item) => this.data[item].id)
+
+    fs.readdirSync(getPath(this.#core.path, ['TemplatesBuildData']), (item) => {
+      if (!ids.includes(item)) fs.unlinkSync(getPath(this.#core.path, ['TemplatesBuildData', item]))
+    })
+
     this.save()
   }
 

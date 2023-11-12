@@ -9,8 +9,8 @@ function showPromptMessage (color, title, content) {
   let div = promptMessages.insertBefore(Component.div({ style: { display: 'flex', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', marginLeft: '[0.5ps]', marginTop: '[0.5ps]', width: '[12.5ps]', height: '[4.25ps]', animation: 'promptMessage_show 0.25s 1', overflow: 'hidden', cursor: 'pointer' }}), promptMessages.childNodes[0])
   div.appendChild(Component.div({ style: { backgroundColor: color, width: '[0.25ps]', height: '[4.35ps]' }}))
   let div2 = div.appendChild(Component.div({ style: { width: '[12.25ps]', height: '[4.35ps]' }}))
-  div2.appendChild(Component.text(FontSize.title3, title, { style: { whiteSpace: 'wrap', marginLeft: '[0.5ps]', marginTop: '[0.3ps]', marginBottom: '[0.1ps]' }}))
-  div2.appendChild(Component.text(FontSize.subTitle2, content, { style: { marginLeft: '[0.5ps]', opacity: 0.75 }}))
+  div2.appendChild(Component.text(FontSize.title3, title, { style: { marginLeft: '[0.5ps]', marginTop: '[0.3ps]', marginBottom: '[0.1ps]' }}))
+  div2.appendChild(Component.text(FontSize.subTitle2, content, { style: { marginLeft: '[0.5ps]', whiteSpace: 'wrap', opacity: 0.75 }}))
 
   let timeout = setTimeout(() => closePromptMessage(div), 5000)
 

@@ -43,6 +43,14 @@
     .hover_reset:hover {
       transform: rotate(90deg)
     }
+
+    .hover_changeState {
+      transition-duration: 0.5s
+    }
+    
+    .hover_changeState:hover {
+      transform: scale(1.1)
+    }
   </style>
   
   <body style="position: fixed; background-color: var(--background); margin: 0px"></body>
@@ -62,7 +70,7 @@
     await loadTheme()
 
     let div = document.body.appendChild(Component.div({ style: { center: 'column', backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderStyle: 'none none solid none', boxSizing: 'border-box', height: '[3.5ps]' }}))
-    div.appendChild(Component.text(FontSize.title, 'Light Panel', { style: { marginLeft: '[1ps]', cursor: 'pointer' }}))
+    div.appendChild(Component.text(FontSize.title, 'Light Panel', { style: { marginLeft: '[1ps]', cursor: 'pointer' }})).onclick = () => loadPage('Containers')
     let div2 = div.appendChild(Component.div({ style: { flex: 1, display: 'flex', flexDirection: 'row-reverse' }}))
     div2.appendChild(Component.svgImage('/Image/Logout.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
     div2.appendChild(Component.svgImage('/Image/Language.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
@@ -71,7 +79,7 @@
     div3.appendChild(Component.div({ id: 'features', style: { flex: 'flex', flexDirection: 'column', backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderStyle: 'none solid none none', boxSizing: 'border-box', width: '[11ps]' }}))
     div3.appendChild(Component.div({ id: 'page', style: { flex: 'flex', flexDirection: 'column', center: 'column', width: 'calc(100vw - [11ps])', overflowX: 'hidden', overflowY: 'auto' }}))
     
-    document.body.appendChild(Component.div({ id: 'promptMessages', style: { position: 'fixed', left: '0px', top: '0px', height: '100vh', overflow: 'hidden', zIndex: 999 }}))
+    document.body.appendChild(Component.div({ id: 'promptMessages', style: { position: 'fixed', left: '0px', top: '0px', maxHeight: '100vh', overflow: 'hidden', zIndex: 999 }}))
   
     console.log(`[${getTranslation('log>>面板')}]: ${getTranslation('log>>框架加載完成 (花費: {time}ms)', { time: Math.round(performance.now()-start) })}`)
   

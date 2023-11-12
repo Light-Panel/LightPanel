@@ -19,8 +19,8 @@ async function checkSession () {
       const div = document.body.appendChild(Component.div({ style: { position: 'fixed', center: 'row column', top: '0px', height: '0px', width: '100vw', height: '100vh', backdropFilter: 'blur(2.5px) brightness(75%)', zIndex: 998 }}))
       const div2 = div.appendChild(Component.div({ style: { display: 'flex', flexDirection: 'column', center: 'column', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[1ps]', width: '[12.5ps]' }}))
       div2.appendChild(Component.text(1.25, getTranslation('ui>>登入'), { style: { marginTop: '[1.5ps]', marginBottom: '[1ps]', width: '[2.5ps]' }}))
-      const input_name = div2.appendChild(Component.input('text', '', { style: { width: '[10ps]', marginBottom: '[0.5ps]' }}, getTranslation('ui>>帳號名')))
-      const input_password = div2.appendChild(Component.input('password', '', { style: { marginBottom: '[1.25ps]', width: '[10ps]' }}, getTranslation('ui>>密碼')))
+      const input_name = div2.appendChild(Component.input('text', '', { style: { marginBottom: '[0.5ps]', width: '[10.5ps]' }}, getTranslation('ui>>帳號名')))
+      const input_password = div2.appendChild(Component.input('password', '', { style: { marginBottom: '[1.25ps]', width: '[10.5ps]' }}, getTranslation('ui>>密碼')))
       
       let state = false
       
@@ -30,7 +30,7 @@ async function checkSession () {
           else if (input_password.value === '') showPromptMessage('var(--errorColor)', getTranslation('ui>>無法登入'), getTranslation('ui>>請輸入密碼'))
           else {
             state = true
-            element.style.opacity = 0.75
+            element.style.opacity = 0.5
 
             let response = await (await fetch(`/Api/Login?name=${input_name.value}&password=${input_password.value}`)).json()
             
@@ -72,9 +72,11 @@ async function checkSession () {
       })
 
       socket.on('connect', async () => {
+        console.log(`[Socket]: ${getTranslation('log>>連接成功')}`)
+
         data.panelInfo = await sendRequest({ type: 'getPanelInfo' })
 
-        console.log(getTranslation('log>>- Light Panel -\n\n版本: {version}\n\n[伺服器]\n\n平台: {platform}\n記憶體: {toltalMemory} MB', { version: data.panelInfo.version, platform: data.panelInfo.platform, toltalMemory: data.panelInfo.toltalMemory }))
+        console.log(getTranslation('log>>- Light Panel -\n\n版本: {version}', { version: data.panelInfo.version, platform: data.panelInfo.platform, toltalMemory: data.panelInfo.toltalMemory }))
       })
 
       socket.on('response', (data) => {

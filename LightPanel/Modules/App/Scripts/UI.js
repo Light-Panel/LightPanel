@@ -5,7 +5,7 @@ export { Component, FontSize, setAttribute }
 class Component {
   //Test
   static text (fontSize, text, options) {
-    return createElement('h1', parseOptions({ innerHTML: text, style: { color: 'var(--textColor)', fontSize: (typeof fontSize === 'number') ? `[${fontSize}ps]` : fontSize, margin: '0px' }}, options))
+    return createElement('h1', parseOptions({ innerHTML: text, style: { color: 'var(--textColor)', fontSize: (typeof fontSize === 'number') ? `[${fontSize}ps]` : fontSize, whiteSpace: 'nowrap', margin: '0px' }}, options))
   }
 
   //Url Text
@@ -103,6 +103,11 @@ class Component {
   //Container
   static div (options) {
     return createElement('div', parseOptions(options))
+  }
+
+  //Canvas
+  static canvas (options) {
+    return createElement('canvas', parseOptions(options))
   }
 }
 

@@ -52,10 +52,11 @@ import { Component, FontSize } from '/Script/UI.js'
     const div5 = div4.appendChild(Component.div({ style: { backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', marginLeft: '[1ps]', marginBottom: '[1.15ps]', width: 'calc(100vw - [15ps])' }}))
     const div6 = div5.appendChild(Component.div({ style: { display: 'flex', center: 'column', marginLeft: '[0.5ps]', marginTop: '[0.5ps]' }}))
     div6.appendChild(Component.text(FontSize.subTitle, `${getTranslation('ui>>最大 CPU (%)')}:`, { style: { marginRight: '[0.5ps]' }}))
-    const input_maxCPU = div6.appendChild(Component.input('number', '25', { min: 1, max: 100, style: { padding: '[0.2ps]', paddingLeft: '[0.4ps]', width: '[5.5ps]' }}))
-  
+    const input_maxCPU = div6.appendChild(Component.input('number', '100', { min: 1, max: data.panelInfo.cpus*100, style: { padding: '[0.2ps]', paddingLeft: '[0.4ps]', width: '[5.5ps]' }}))
+    div6.appendChild(Component.text(FontSize.subTitle2, `(${getTranslation('ui>>每個核心算作 100%')})`, { style: { marginLeft: '[0.5ps]', opacity: 0.5 }}))
+
     event(input_maxCPU, 'change', () => {
-      if (input_maxCPU.value > 100) input_maxCPU.value = 100
+      if (input_maxCPU.value > data.panelInfo.cpus*100) input_maxCPU.value = 100
       else if (input_maxCPU.value < 1) input_maxCPU.value = 1
     })
 
@@ -80,7 +81,7 @@ import { Component, FontSize } from '/Script/UI.js'
         else if (select_template.value === undefined) showPromptMessage('var(--errorColor)', getTranslation('ui>>無法創建容器'), getTranslation('ui>>請選擇一個範本')) 
         else {
           state = true
-          element.style.opacity = 0.75
+          element.style.opacity = 0.5
   
           let templateParametersData = {}
   
@@ -88,9 +89,11 @@ import { Component, FontSize } from '/Script/UI.js'
   
           let response = await sendRequest({ type: 'createContainer', name: input_name.value, template: select_template.value, templateParameters: templateParametersData, maxCPU: input_maxCPU.value, maxMemory: input_maxMemory.value, networkPort: input_networkPort.value })
         
-          console.log(response)
+          if (response.error) {
+          
+          } else loadPage(`Container?id=${response.id}`)
         }
       }
-    }, { style: { marginBottom: '[1ps]', width: '[10ps]' }}))
+    }, { style: { marginBottom: '[1ps]', width: '[7ps]' }}))
   } else loadPage('Containers')
 })()

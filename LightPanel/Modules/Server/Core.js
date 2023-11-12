@@ -24,7 +24,7 @@ module.exports = class {
     if (!fs.statSync(path).isDirectory()) throw new Error(getTranslation('error>>{path} 不是一個資料夾', { path }))
 
     this.#path = path
-    this.#info = Object.assign(JSON.parse(fs.readFileSync(getPath(__dirname, ['<', 'Info.json']))), { platform: os.platform(), toltalMemory: Math.round(os.totalmem()/1000000) })
+    this.#info = Object.assign(JSON.parse(fs.readFileSync(getPath(__dirname, ['<', 'Info.json']))), { platform: os.platform(), cpus: os.cpus().length/2, toltalMemory: Math.round(os.totalmem()/131072) })
 
     this.checkFiles()
 

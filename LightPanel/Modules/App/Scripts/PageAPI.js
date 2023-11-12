@@ -1,10 +1,11 @@
-export { loadPage, displayFeatures, event }
+export { loadPage, displayFeatures, event, createInterval }
 
 import { getTranslation } from '/Script/Translation.js'
 import createElement from '/Script/CreateElement.js'
 import { Component, FontSize } from '/Script/UI.js'
 
 let eventListeners = []
+let timers = []
 
 let featureType
 
@@ -21,8 +22,12 @@ async function loadPage (name) {
 
   if (script !== null) {
     eventListeners.forEach((item) => item.target.removeEventListener(item.name, item.callback))
+    timers.forEach((item) => {
+      if (item.type === 'interval') clearInterval(item.id)
+    })
 
     eventListeners = []
+    timers = []
 
     script.remove()
   }
@@ -44,6 +49,13 @@ function displayFeatures (type) {
       addFeature(getTranslation('ui>>範本'), 'Image.svg', 'Templates')
       addFeature(getTranslation('ui>>用戶管理'), 'Users.svg', 'Users')
       addFeature(getTranslation('ui>>設定'), 'Settings.svg', 'Settings')
+    } else if (type === 'container') {
+      let id = new URLSearchParams(window.location.search).get('id')
+
+      addFeature(getTranslation('ui>>狀態'), 'Stats.svg', `Container?id=${id}&feature=state`)
+      addFeature(getTranslation('ui>>控制台'), 'Terminal.svg', `Container?id=${id}&feature=console`)
+      addFeature(getTranslation('ui>>檔案管理'), 'Folder.svg', `Container?id=${id}&feature=fileManager`)
+      addFeature(getTranslation('ui>>設定'), 'Options.svg', `Container?id=${id}&feature=settings`)
     }
   }
 }
@@ -62,4 +74,13 @@ function event (target, name, callback) {
   target.addEventListener(name, callback)
 
   eventListeners.push({ target, name, callback })
+}
+
+//Create Interval
+function createInterval (interval, callback) {
+  let id = setInterval(callback, interval)
+
+  timers.push({ type: 'interval', id })
+
+  return id
 }
