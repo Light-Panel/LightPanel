@@ -5,6 +5,8 @@
 > [!WARNING]
 > Light Panel 是一個基於 Docker 的面板，這代表每個你託管的專案都會在 Docker 容器裡運行。
 
+官方 Discord - https://discord.gg/NDNe8C9pFs
+
 ## 目錄
 
 * [安裝](#安裝)
