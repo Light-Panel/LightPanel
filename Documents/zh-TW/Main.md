@@ -19,7 +19,7 @@
 
 **Linux / Windows**
 ```
-curl https://raw.githubusercontent.com/Light-Panel/LightPanel/main/Install.js | node
+curl https://raw.githubusercontent.com/Light-Panel/LightPanel/main/Assets/Install.js | node
 ```
 
 **MacOS**
