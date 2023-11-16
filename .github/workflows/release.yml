@@ -9,6 +9,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: ../../Assets/Files.json
       - uses: actions/setup-node@v4
         with:
          node-version: '18'
