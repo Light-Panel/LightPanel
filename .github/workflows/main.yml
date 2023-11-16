@@ -19,4 +19,4 @@ jobs:
           node-version: '18'
 
       - name: Modify and write to file
-        run: node Assets/Release.js
+        run: node Actions/Release.js
