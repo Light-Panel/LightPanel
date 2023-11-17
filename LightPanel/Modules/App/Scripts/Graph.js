@@ -8,20 +8,22 @@ export default (canvas, data, max, average) => {
   ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--textColor')
   ctx.lineWidth = ((window.innerWidth+window.innerHeight)/100)*0.15
 
-  ctx.moveTo(0, canvas.height-((canvas.height/max)*((canvas.height/max)*data[0])))
+  ctx.moveTo(0, canvas.height-((canvas.height/max)*data[0]))
   data.forEach((item, index) => {
     ctx.lineTo((canvas.width/(data.length-1))*index, canvas.height-((canvas.height/max)*item))
   })
   ctx.stroke()
 
   if (average === undefined || average === true) {
-    ctx.strokeStyle = hexToRgba(getComputedStyle(document.body).getPropertyValue('--textColor'), 0.1)
-    ctx.lineWidth = ((window.innerWidth+window.innerHeight)/100)*0.25
+    ctx.beginPath()
 
-    let averageData = data.slice(0, 5)
+    ctx.strokeStyle = hexToRgba(getComputedStyle(document.body).getPropertyValue('--textColor'), 0.1)
+    ctx.lineWidth = ((window.innerWidth+window.innerHeight)/100)*0.3
+
+    let averageData = data.slice(0, 10)
     ctx.moveTo(0, canvas.height-((canvas.height/max)*(averageData.reduce((a, b) => a+b)/averageData.length)))
     data.forEach((item, index) => {
-      averageData = data.slice((index-5 < 0) ? 0 : index-5, index+5)
+      averageData = data.slice((index-10 < 0) ? 0 : index-10, index+10)
       ctx.lineTo((canvas.width/(data.length-1))*index, canvas.height-((canvas.height/max)*(averageData.reduce((a, b) => a+b)/averageData.length)))
     })
     ctx.stroke()

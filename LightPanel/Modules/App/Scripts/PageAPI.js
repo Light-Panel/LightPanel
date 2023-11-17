@@ -7,10 +7,20 @@ import { Component, FontSize } from '/Script/UI.js'
 let eventListeners = []
 let timers = []
 
+setInterval(() => {
+  timers.forEach((item) => {
+    if (performance.now()-item.lastUpdateTime > item.interval) {
+      item.lastUpdateTime = performance.now()
+
+      item.callback()
+    }
+  })
+}, 1)
+
 let featureType
 
 //Load Page
-async function loadPage (name) {
+async function loadPage (name, updateFeatures) {
   window.history.pushState({}, null, name)
   
   let response = await (await fetch(`/Page/${name}`)).text()
@@ -21,9 +31,9 @@ async function loadPage (name) {
   while (page.firstChild) page.removeChild(page.firstChild)
 
   if (script !== null) {
-    eventListeners.forEach((item) => item.target.removeEventListener(item.name, item.callback))
-    timers.forEach((item) => {
-      if (item.type === 'interval') clearInterval(item.id)
+    eventListeners.forEach((item) => {
+      if (item.method === undefined) item.target.removeEventListener(item.name, item.callback)
+      else if (item.method === 'on') item.target.off(item.name, item.callback)
     })
 
     eventListeners = []
@@ -32,8 +42,10 @@ async function loadPage (name) {
     script.remove()
   }
 
+  if (updateFeatures === true) featureType = undefined
+
   if (response === 'Resource Not Found') await loadPage('Containers')
-  else document.body.appendChild(createElement('script', { innerHTML: response, type: 'module' }))
+  else document.body.appendChild(createElement('script', { id: 'script', innerHTML: response, type: 'module' }))
 }
 
 //Display Features
@@ -64,23 +76,20 @@ function displayFeatures (type) {
 function addFeature (label, image, pageName) {
   let div = document.getElementById('features').appendChild(Component.div({ style: { center: 'column', height: '[3ps]', cursor: 'pointer' }}))
   if (image !== undefined) div.appendChild(Component.svgImage(`/Image/${image}`, { style: { height: '[1.5ps]', marginLeft: '[0.75ps]' }}))
-  div.appendChild(Component.text(FontSize.title3, label, { style: { marginLeft: '[0.75ps]' }}))
+  div.appendChild(Component.text(FontSize.subTitle, label, { style: { marginLeft: '[0.75ps]' }}))
 
   div.onclick = () => loadPage(pageName)
 }
 
 //Listen To Event
-function event (target, name, callback) {
-  target.addEventListener(name, callback)
+function event (target, name, callback, method) {
+  if (method === undefined) target.addEventListener(name, callback)
+  else target[method](name, callback)
 
-  eventListeners.push({ target, name, callback })
+  eventListeners.push({ target, name, callback, method })
 }
 
 //Create Interval
 function createInterval (interval, callback) {
-  let id = setInterval(callback, interval)
-
-  timers.push({ type: 'interval', id })
-
-  return id
+  timers.push({ interval, lastUpdateTime: performance.now(), callback })
 }

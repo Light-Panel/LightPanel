@@ -17,8 +17,12 @@ module.exports = (core) => {
       if (reqPath[0] === 'Api') {
         let query = url.parse(req.url, true).query
 
-        if (reqPath[1] === 'CheckSession') res.end(JSON.stringify(core.session.checkSession(query.sessionID)))
-        else if (reqPath[1] === 'Login') res.end(JSON.stringify(core.account.login(query.name, query.password)))
+        let response
+        if (reqPath[1] === 'GetAllLanguages') response = getAllLanguages()
+        else if (reqPath[1] === 'CheckSession') response = core.session.checkSession(query.sessionID)
+        else if (reqPath[1] === 'Login') response = core.account.login(query.name, query.password)
+      
+        res.end(JSON.stringify(response))
       } else if (reqPath[0] === 'Script') {
         if (fs.existsSync(getPath(__dirname, ['<', 'App', 'Scripts', reqPath[1]]))) {
           res.setHeader('Content-Type', 'text/javascript')
@@ -107,6 +111,6 @@ module.exports = (core) => {
   return server
 }
 
-const { getTranslation } = require('./Tools/Translation')
+const { getAllLanguages, getTranslation } = require('./Tools/Translation')
 const getContentType = require('./Tools/GetContentType')
 const getPath = require('./Tools/GetPath')

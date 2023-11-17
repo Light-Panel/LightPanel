@@ -1,6 +1,9 @@
-export { loadTranslation, getTranslation }
+export { loadTranslation, getTranslation, changeLanguage }
 
+import { showPromptMessage } from '/Script/PromptMessage.js'
 import { setCookie, getCookie } from '/Script/Cookie.js'
+import { Component, FontSize } from '/Script/UI.js'
+import { loadPage } from '/Script/PageAPI.js'
 
 let data
 
@@ -35,4 +38,54 @@ function getTranslation (path, parameters) {
   if (parameters !== undefined) Object.keys(parameters).forEach((item) => target = target.replaceAll(`{${item}}`, parameters[item]))
 
   return target
+}
+
+//Change Langauge
+async function changeLanguage () {
+  let div = document.body.appendChild(Component.div({ style: { position: 'fixed', flexDirection: 'column', center: 'column', left: '0px', top: '0px', width: '100vw', height: '100vh', backdropFilter: 'blur(2.5px) brightness(75%)', animation: 'changeLanguage_show 0.25s 1', zIndex: 998 }}))
+  div.appendChild(Component.text(FontSize.title, getTranslation('ui>>更改語言'), { style: { marginTop: '[1ps]', marginBottom: '[2.5ps]' }}))
+  let div2 = div.appendChild(Component.div({ style: { display: 'flex', flexWrap: 'wrap', center: 'row', width: '[35ps]' }}))
+
+  let response = await (await fetch('/Api/GetAllLanguages')).json()
+
+  let state = false
+
+  Object.keys(response).forEach((item) => {
+    div2.appendChild(Component.text(FontSize.title2, `${response[item].flag} ${response[item].name}`, { style: { marginLeft: '[1ps]', marginRight: '[1ps]', marginBottom: '[0.5ps]', opacity: (getCookie('language') === item) ? 1 : 0.5, cursor: 'pointer' }})).onclick = async () => {
+      if (!state) {
+        state = true
+       
+        setCookie('language', item)
+  
+        await loadTranslation()
+
+        showPromptMessage('var(--successColor)', getTranslation('ui>>成功更改語言至 {language}', { language: response[item].name }), getTranslation('ui>>部分內容需刷新頁面才會套用'))
+
+        let animation = div.animate([
+          { opacity: 1 },
+          { opacity: 0 }
+        ], { duration: 250 })
+  
+        animation.addEventListener('finish', () => {
+          div.remove()
+
+          if (window.location.pathname === '/') loadPage('Containers', true)
+          else loadPage(`${window.location.pathname.substring(1, window.location.pathname.length)}${(window.location.search === '') ? '' : window.location.search}`, true)
+        }, { once: true })
+      }
+    }
+  })
+
+  div.onclick = (e) => {
+    if (!state && e.target === div) {
+      state = true
+
+      let animation = div.animate([
+        { opacity: 1 },
+        { opacity: 0 }
+      ], { duration: 250 })
+
+      animation.addEventListener('finish', () => div.remove(), { once: true })
+    }
+  }
 }

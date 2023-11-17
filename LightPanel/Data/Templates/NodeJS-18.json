@@ -4,16 +4,20 @@
   },
 
   "installEnv": [
-    "NVM_DIR /usr/local/nvm"
+    "NVM_DIR $HOME/.nvm"
   ],
 
   "installCommands": [
     "apt-get -y update",
-    "apt-get -y install curl",
-    "mkdir -p /usr/local/nvm",
+    "apt-get -y install zsh curl",
+    "mkdir $NVM_DIR",
     "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash",
-    "/bin/bash -c \"source /usr/local/nvm/nvm.sh && nvm install 18 && nvm use 18\""
+    "touch ~/.zshrc && echo \"source $NVM_DIR/nvm.sh\" >> ~/.zshrc",
+    "/bin/zsh -c \"source $NVM_DIR/nvm.sh && nvm install 18 && nvm use 18\"",
+    "chsh -s $(which zsh)"
   ],
+
+  "startCommand": ["zsh"],
 
   "shortcuts": {
     "Run": "node {mainFile}"

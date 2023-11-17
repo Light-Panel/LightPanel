@@ -66,17 +66,18 @@ module.exports = class {
     else {
       let start = performance.now()
 
-      fs.writeFileSync(getPath(this.#core.path, ['TemplatesBuildData', this.data[name].id]), applyParameters('FROM ubuntu\n\n{installEnv}\n\n{installCommands}\n\nCMD ["bash"]', { installEnv: data.installEnv.map((item) => `ENV ${item}`).join('\n'), installCommands: data.installCommands.map((item) => `RUN ${item}`).join('\n') }))
+      fs.writeFileSync(getPath(this.#core.path, ['TemplatesBuildData', `${this.data[name].id}.txt`]), applyParameters('FROM ubuntu\n\n{installEnv}\n\{installCommands}\n\nCMD {startCommand}', { installEnv: data.installEnv.map((item) => `ENV ${item}`).join('\n'), installCommands: data.installCommands.map((item) => `RUN ${item}`).join('\n'), startCommand: data.startCommand.map((item2) => `"${item2}"`).join(' ') }))
     
-      let buildResult = await Docker.buildImage(`lightpanel-${this.data[name].id}`, getPath(this.#core.path, ['TemplatesBuildData']), getPath(this.#core.path, ['TemplatesBuildData', this.data[name].id]))
+      let buildResult = await Docker.buildImage(`lightpanel-${this.data[name].id}`, getPath(this.#core.path, ['TemplatesBuildData']), getPath(this.#core.path, ['TemplatesBuildData', `${this.data[name].id}.txt`]))
 
-      if (buildResult.error) this.#core.log('warn', getTranslation('log>>範本構建失敗 {template} (原因: {reason})', { template: name, reason: buildResult.message.replaceAll('\n', '') }))
-      else {
+      if (buildResult.error) {
+        this.#core.log('warn', getTranslation('log>>範本構建失敗 {template} (原因: {reason})', { template: name, reason: buildResult.message.replaceAll('\n', '') }))
+      } else {
         this.data[name].state = 'builded'
 
         this.save()
 
-        this.#core.log('complete', getTranslation('log>>成功建構範本 {template} (花費 {time}s)', { time: parseFloat((performance.now()-start)/1000).toFixed(2) }))
+        this.#core.log('complete', getTranslation('log>>成功建構範本 {template} (花費 {time}s)', { template: name, time: parseFloat((performance.now()-start)/1000).toFixed(2) }))
       }
     }
   }  
@@ -107,7 +108,8 @@ module.exports = class {
 
     if (!Array.isArray(data.installEnv)) return { error: true, content: 'Parameter Type Error', key: 'installEnv', type: 'array' }
     if (!Array.isArray(data.installCommands)) return { error: true, content: 'Parameter Type Error', key: 'installCommands', type: 'array' }
-    
+    if (!Array.isArray(data.startCommand)) return { error: true, content: 'Parameter Type Error', key: 'startCommand', type: 'array' }
+
     if (typeof data.shortcuts !== 'object' || data.shortcuts === null) return { error: true, content: 'Parameter Type Error', key: 'shortcuts', type: 'object' }
     for (let item of Object.keys(data.shortcuts)) {
       if (typeof data.shortcuts[item] !== 'string') return { error: true, content: 'Parameter Type Error', key: `shortcuts.${item}`, type: 'string' }
@@ -123,3 +125,5 @@ const generateID = require('./Tools/GenerateID')
 const getPath = require('./Tools/GetPath')
 
 const Docker = require('./Docker')
+
+//rm -r Data/Templates && rm -r Data/TemplatesBuildData && rm Data/TemplatesInfo.json

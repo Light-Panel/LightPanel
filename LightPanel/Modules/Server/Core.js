@@ -33,6 +33,7 @@ module.exports = class {
     
     this.template = new Template(this)
     this.container = new Container(this)
+    this.ttyManager = new TtyManager(this)
     this.account = new Account(this)
     this.session = new Session(this)
 
@@ -73,6 +74,7 @@ module.exports = class {
 const { loadTranslation, getTranslation } = require('./Tools/Translation')
 const getPath = require('./Tools/GetPath')
 
+const TtyManager = require('./TtyManager')
 const startSocketServer = require('./SocketServer')
 const startHttpServer = require('./HttpServer')
 const Container = require('./Container')

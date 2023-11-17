@@ -8,8 +8,9 @@ module.exports = class {
     this.#core = core
 
     this.data = {}
+    this.recordData = {}
     this.logData = {}
-    this.terminals = {}
+    this.ttys = {}
 
     this.load()
 
@@ -23,14 +24,38 @@ module.exports = class {
         if (item.Name.substring(0, 10) === 'lightpanel') {
           let id = item.Name.split('-')[1]
 
-          this.data[id].cpuRecord.push(+item.CPUPerc.replace('%', ''))
+          if (this.data[id] === undefined) Docker.stopContainer(`lightpanel-${id}`)
+          else this.addRecord(id, +item.CPUPerc.replace('%', ''), parseMemoryUsage(item.MemUsage))
+        }
+      })
 
+      let runningContainers = []
+      
+      let result = await Docker.getRunningContainers()
+      result.forEach((item) => {
+        if (item.Names.substring(0, 10) === 'lightpanel') {
+          let id = item.Names.split('-')[1]
+
+          if (this.data[id] !== undefined && this.data[id].state !== 'running') this.data[id].state = 'running'
+
+          runningContainers.push(id)
+        }
+      })
+
+      Object.keys(this.data).forEach((item) => {
+        if (!runningContainers.includes(item)) {
+          if (this.data[item].state !== 'idle') this.data[item].state = 'idle'
+          
+          this.addRecord(item, 0, 0)
         }
       })
     }, 1000)
 
-    //Save Log Data
-    setInterval(() => this.saveLogData(), 10000)
+    //Save Data
+    setInterval(() => {
+      this.save()
+      this.saveLogData()
+    }, 1000)
   }
 
   //Load Containers Data
@@ -68,7 +93,7 @@ module.exports = class {
   }
 
   //Create Container
-  createContainer (name, template, templateParameters, maxCPU, maxMemory, networkPort) {
+  createContainer (name, template, templateParameters, maxCPU, maxMemory, storage, networkPort) {
     if (this.#core.template.getTemplate(template) === undefined) return { error: true, content: 'Template Not Found' }
     if (maxCPU < 1 || maxCPU > 100) return { error: true, content: 'MaxCPU Is Out Of Range' }
     if (maxMemory < 1 || maxMemory > this.#core.info.toltalMemory) return { error: true, content: 'maxMemory Is Out Of Range' }
@@ -91,9 +116,10 @@ module.exports = class {
       templateParameters: Object.assign(templateParameters, templateParametersData),
       shortcuts: templateData.shortcuts,
 
-      maxCPU,
-      maxMemory,
-      networkPort,
+      maxCPU: +maxCPU,
+      maxMemory: +maxMemory,
+      storage: +storage,
+      networkPort: +networkPort,
 
       cpuRecord: [0],
       memoryRecord: [0]
@@ -121,22 +147,28 @@ module.exports = class {
 
       maxCPU: this.data[id].maxCPU,
       maxMemory: this.data[id].maxMemory,
+      storage: this.data[id].storage,
       networkPort: this.data[id].networkPort,
 
-      cpuRecord: this.data[id].cpuRecord,
-      memoryRecord: this.data[id].memoryRecord
+      cpuRecord: (this.recordData[id] === undefined) ? [0] : this.recordData[id].cpu,
+      memoryRecord: (this.recordData[id] === undefined) ? [0] : this.recordData[id].memory,
     }
+  }
+
+  //Get Container Shortcuts
+  getContainerShortcuts (id) {
+    if (this.data[id] === undefined) return undefined
+
+    return this.data[id].shortcuts
   }
 
   //Check Container State
   async checkContainerState (id) {
     for (let item of await Docker.getRunningContainers()) {
       if (item.Names === `lightpanel-${id}`) {
-        if (this.data[id].state === 'idle') {
-          this.data[id].state = 'running'
+        if (this.data[id].state === 'idle') this.data[id].state = 'running'
 
-          if (this.terminals[id] === undefined) {} //get terminal
-        }
+        if (this.#core.ttyManager.ttys[id] === undefined) this.#core.ttyManager.addTTY(id, await Docker.getContainerTTY(`lightpanel-${id}`))
 
         return
       }
@@ -145,7 +177,7 @@ module.exports = class {
     if (this.data[id].state === 'running') {
       this.data[id].state = 'idle'
 
-      if (this.terminals[id] !== undefined) delete this.terminals[id]
+      if (this.#core.ttyManager.ttys[id] !== undefined) this.#core.ttyManager.removeTTY(id)
     }
   }
 
@@ -162,7 +194,7 @@ module.exports = class {
 
       this.data[id].state = 'running'
 
-      this.terminals[id] = data.terminal 
+      this.#core.ttyManager.addTTY(id, data.tty)
     } else if (this.data[id].state === 'running') {
       this.data[id].state = 'stopping'
 
@@ -170,7 +202,7 @@ module.exports = class {
 
       this.data[id].state = 'idle'
 
-      delete this.terminals[id]
+      this.#core.ttyManager.removeTTY(id)
     } else return { error: true, content: 'Can Not Change State', state: this.data[id].state }
 
     this.save()
@@ -178,11 +210,35 @@ module.exports = class {
     return { error: false }
   }
 
-  //Add Log
-  addLog (id, content) {
+  //Add Container Record
+  addRecord (id, cpu, memory) {
+    if (this.recordData[id] === undefined) this.recordData[id] = { cpu: [cpu], memory: [memory] }
+    else {
+      this.recordData[id].cpu.push(cpu)
+      this.recordData[id].memory.push(memory)
+
+      if (this.recordData[id].cpu.length > 120) this.recordData[id].cpu.splice(0, 1)
+      if (this.recordData[id].memory.length > 120) this.recordData[id].memory.splice(0, 1)
+    }
+  }
+
+  //Get Container Log
+  getContainerLog (id) {
+    if (this.logData[id] === undefined) return { error: true, content: 'Log Data Not Found' }
+    else return { error: false, data: this.logData[id].join('\n') }
+  }
+
+  //Add Container Log
+  addContainerLog (id, content) {
     if (this.logData[id] === undefined) return { error: true, content: 'Log Data Not Found' }
     else {
-      this.logData[id] = this.logData[id].concat(content.split('\n'))
+      let lines = content.split('\n')
+
+      this.logData[id][this.logData[id].length-1]+=lines[0]
+
+      lines.splice(0, 1)
+
+      this.logData[id] = this.logData[id].concat(lines)
        
       while (this.logData[id].length > 100) this.logData[id].splice(0, 1)
 
@@ -191,6 +247,7 @@ module.exports = class {
   }
 }
 
+const parseMemoryUsage = require('./Tools/ParseMemoryUsage')
 const generateID = require('./Tools/GenerateID')
 const getPath = require('./Tools/GetPath')
 

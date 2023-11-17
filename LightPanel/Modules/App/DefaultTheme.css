@@ -1,3 +1,7 @@
+*{
+  font-family: Sans-serif
+}
+
 :root {
   --background: #1A1C25;
 
@@ -10,5 +14,6 @@
   --textColor: #E3E4EB;
   --subTextColor: #000000;
 
+  --successColor: #00FF00;
   --errorColor: #FF0000;
 }

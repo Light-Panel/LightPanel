@@ -8,7 +8,7 @@ import { Component, FontSize } from '/Script/UI.js'
 export default (id) => {
   const page = document.getElementById('page')
 
-  const div = page.appendChild(Component.div({ style: { flexShrink: 0, display: 'flex', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', marginTop: '[1ps]', width: 'calc(100vw - [13ps])', overflow: 'hidden' }}))
+  const div = page.appendChild(Component.div({ style: { flexShrink: 0, display: 'flex', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[1ps]', width: 'calc(100vw - [13ps])', overflow: 'hidden' }}))
   const div2 = div.appendChild(Component.div({ style: { flex: 1 }}))
   const text_name = div2.appendChild(Component.text(FontSize.title2, '', { style: { marginLeft: '[1ps]', marginTop: '[0.75ps]' }}))
   const div3 = div2.appendChild(Component.div({ style: { display: 'flex' }}))
@@ -19,7 +19,6 @@ export default (id) => {
   const text_memory = div4.appendChild(Component.text(FontSize.subTitle2, '', { style: { flex: 1 }}))
   const div5 = div.appendChild(Component.div({ style: { backgroundColor: 'var(--mainColor)', width: '[3ps]', cursor: 'pointer' }}))
   const div6 = div5.appendChild(Component.div({ class: 'hover_changeState', style: { center: 'row column', width: '[3ps]', height: '100%' }}))
-  let image = div6.appendChild(Component.svgImage('/Image/Start.svg', { style: { width: '[1.5ps]' }}))
 
   let state = false
 
@@ -34,12 +33,25 @@ export default (id) => {
 
       state = false
       div6.style.opacity = 1
-    }
+    } else showPromptMessage('var(--errorColor)', getTranslation('ui>>無法改變容器的狀態'), getTranslation('ui>>請稍候再試'))
   })
+
+  let oldContainerState
 
   //Update Container Info
   async function update () {
     data.containerInfo = await sendRequest({ type: 'getContainerInfo', id })
+
+    if (data.containerInfo.state !== oldContainerState) {
+      oldContainerState = data.containerInfo.state
+
+      let image
+      if (oldContainerState === 'running' || oldContainerState === 'starting') image = Component.svgImage('/Image/Stop.svg', { style: { width: '[1.5ps]' }})
+      else if (oldContainerState === 'idle' || oldContainerState === 'stopping') image = Component.svgImage('/Image/Start.svg', { style: { width: '[1.5ps]' }})
+    
+      if (div6.firstChild === null) div6.appendChild(image)
+      else div6.replaceChild(image, div6.firstChild)
+    }
 
     text_state.innerHTML = `${getTranslation('ui>>狀態')}: ${getTranslation(`ui>>${data.containerInfo.state}`)}`
     text_networkPort.innerHTML = `${getTranslation('ui>>網路端口')}: ${data.containerInfo.networkPort}`

@@ -1,8 +1,10 @@
+import { displayFeatures, event, createInterval } from '/Script/PageAPI.js'
 import displayContainerState from '/Script/DisplayContainerState.js'
-import { displayFeatures, createInterval } from '/Script/PageAPI.js'
+import { socket, data, sendRequest } from '/Script/Session.js'
+import { encrypt, decrypt } from '/Script/Encryption.js'
 import { getTranslation } from '/Script/Translation.js'
-import { data, sendRequest } from '/Script/Session.js'
 import { Component, FontSize } from '/Script/UI.js'
+import generateID from '/Script/GenerateID.js'
 import drawGraph from '/Script/Graph.js'
 
 (async () => {
@@ -12,7 +14,7 @@ import drawGraph from '/Script/Graph.js'
   else {
     data.accountInfo = await sendRequest({ type: 'getAccountInfo' })
 
-    if (data.accountInfo.permissions.includes('manageContainers') || data.accountInfo.containers.includes(id)) {
+    if ((data.accountInfo.permissions.includes('manageContainers') || data.accountInfo.containers.includes(id)) && await sendRequest({ type: 'getContainerInfo', id }) !== undefined) {
       displayFeatures('container')
 
       displayContainerState(id)
@@ -21,7 +23,10 @@ import drawGraph from '/Script/Graph.js'
 
       let pageData
       if (feature === 'state' || feature === null) pageData = await (await fetch('/Page/Container_State')).text()
+      else if (feature === 'console') pageData = await (await fetch('/Page/Container_Console')).text()
       else window.location.href = `/Container?id=${id}`
+
+      data.containerShortcuts = await sendRequest({ type: 'getContainerShortcuts', id })
 
       eval(pageData)
     } else window.location.href = '/Containers'

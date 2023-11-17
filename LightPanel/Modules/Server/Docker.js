@@ -1,4 +1,5 @@
-const { spawn, exec } = require('child_process')
+const { exec } = require('child_process')
+const pty = require('node-pty')
 
 //Docker
 module.exports = class {
@@ -24,13 +25,32 @@ module.exports = class {
     return JSON.parse(`[${data.substring(0, data.length-2)}]`)
   }
 
+  //Get Container TTY
+  static async getContainerTTY (name) {
+    return pty.spawn('docker', ['attach', name], {
+      name: 'xterm-color',
+      cwd: process.env.HOME,
+      env: process.env
+    })
+  }
+
   //Start Container
   static async startContainer (name, image, workDir, maxCPU, maxMemory, networkPort) {
     for (let item of await this.getRunningContainers()) {
       if (item.Names === name) return { error: true, content: 'Container Is Already Running' }
     }
-     
-    return { error: false, terminal: exec(`docker run --name ${name} -w "${workDir}" --cpus ${parseFloat(maxCPU/100).toFixed(2)} --memory ${maxMemory}m --expose ${networkPort} --tty --rm ${image}`) }
+
+    //spawn('docker', ['run', '--name', name, '-w', workDir, '--cpus', parseFloat(maxCPU/100).toFixed(2), '--memory', `${maxMemory}m`, '--expose', networkPort, '-it', '--rm', image], { stdio: ['pipe', 'pipe', 'pipe'] })
+    // docker run --name ${name} -w "${workDir}" --cpus ${parseFloat(maxCPU/100).toFixed(2)} --memory ${maxMemory}m --expose ${networkPort} -it --rm ${image}
+    
+    return {
+      error: false,
+      tty: pty.spawn('docker', ['run', '--name', name, '-w', workDir, '--mount', `type=bind,source=${workDir},target=${workDir}`, '--cpus', parseFloat(maxCPU/100).toFixed(2), '--memory', `${maxMemory}m`, '--expose', networkPort, '-it', '--rm', image], {
+        name: 'xterm-color',
+        cwd: process.env.HOME,
+        env: process.env
+      })
+    }
   }
 
   //Stop Container

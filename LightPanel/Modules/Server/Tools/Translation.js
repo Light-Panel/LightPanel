@@ -1,17 +1,31 @@
+const path = require('path')
 const fs = require('fs')
 
-module.exports = { loadTranslation, getTranslation }
+module.exports = { loadTranslation, getAllLanguages, getTranslation }
 
 const applyParameters = require('./ApplyParameters')
 const getPath = require('./GetPath')
 
 let data
+let allLanguages = {}
 
 //Load Translation
 function loadTranslation (language) {
   if (!fs.existsSync(getPath(__dirname, ['<', '<', '<', 'Data', 'Languages', `${language}.json`]))) throw new Error(`Language Not Found: "${language}"`)
   
   data = JSON.parse(fs.readFileSync(getPath(__dirname, ['<', '<', '<', 'Data', 'Languages', `${language}.json`])))
+
+  allLanguages = {}
+  fs.readdirSync(getPath(__dirname, ['<', '<', '<', 'Data', 'Languages'])).forEach((item) => {
+    let info = JSON.parse(fs.readFileSync(getPath(__dirname, ['<', '<', '<', 'Data', 'Languages', item]))).info
+
+    allLanguages[path.parse(item).name] = { name: info.name, flag: info.flag }
+  })
+}
+
+//Get All Languages
+function getAllLanguages () {
+  return allLanguages
 }
 
 //Get Translation

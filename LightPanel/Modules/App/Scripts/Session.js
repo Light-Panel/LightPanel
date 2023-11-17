@@ -1,6 +1,6 @@
 import { io } from '/NodeModule/socket.io-client/dist/socket.io.esm.min.js'
 
-export { data, checkSession, sendRequest }
+export { socket, data, checkSession, sendRequest }
 
 import { showPromptMessage } from '/Script/PromptMessage.js'
 import { encrypt, decrypt } from '/Script/Encryption.js'
@@ -47,7 +47,7 @@ async function checkSession () {
               let animation = div.animate([
                 { opacity: 1 },
                 { opacity: 0 }
-              ], { duration: 500 })
+              ], { duration: 250 })
 
               animation.addEventListener('finish', async () => {
                 div.remove()
@@ -59,7 +59,7 @@ async function checkSession () {
             }
           }
         }
-      }, { style: { marginBottom: '[1.5ps]', paddingLeft: '[0.75ps]', paddingRight: '[0.75ps]' }}))
+      }, { style: { marginBottom: '[1.5ps]', paddingLeft: '[1ps]', paddingRight: '[1ps]' }}))
     } else {
       let refer = generateID(25, [])
 

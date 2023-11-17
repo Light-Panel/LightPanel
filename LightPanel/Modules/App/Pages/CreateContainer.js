@@ -69,9 +69,17 @@ import { Component, FontSize } from '/Script/UI.js'
       else if (input_maxMemory.value < 1) input_maxMemory.value = 1
     })
 
-    const div8 = div5.appendChild(Component.div({ style: { display: 'flex', center: 'column', marginLeft: '[0.5ps]', marginTop: '[0.5ps]', marginBottom: '[0.5ps]' }}))
-    div8.appendChild(Component.text(FontSize.subTitle, `${getTranslation('ui>>網路端口')}:`, { style: { marginRight: '[0.5ps]' }}))
-    const input_networkPort = div8.appendChild(Component.input('number', '3000', { style: { padding: '[0.2ps]',paddingLeft: '[0.4ps]', width: '[5.5ps]' }}))
+    const div8 = div5.appendChild(Component.div({ style: { display: 'flex', center: 'column', marginLeft: '[0.5ps]', marginTop: '[0.5ps]' }}))
+    div8.appendChild(Component.text(FontSize.subTitle, `${getTranslation('ui>>儲存空間 (GB)')}:`, { min: 1, style: { marginRight: '[0.5ps]' }}))
+    const input_storage = div8.appendChild(Component.input('number', '10', { style: { padding: '[0.2ps]', paddingLeft: '[0.4ps]', width: '[5.5ps]' }}))
+
+    event(input_storage, 'change', () => {
+      if (input_storage.value < 1) input_storage.value = 1
+    })
+    
+    const div9 = div5.appendChild(Component.div({ style: { display: 'flex', center: 'column', marginLeft: '[0.5ps]', marginTop: '[0.5ps]', marginBottom: '[0.5ps]' }}))
+    div9.appendChild(Component.text(FontSize.subTitle, `${getTranslation('ui>>網路端口')}:`, { style: { marginRight: '[0.5ps]' }}))
+    const input_networkPort = div9.appendChild(Component.input('number', '3000', { style: { padding: '[0.2ps]',paddingLeft: '[0.4ps]', width: '[5.5ps]' }}))
 
     let state = false
 
@@ -87,7 +95,7 @@ import { Component, FontSize } from '/Script/UI.js'
   
           Object.keys(templateParameters).forEach((item) => templateParametersData[item] = templateParameters[item].value)
   
-          let response = await sendRequest({ type: 'createContainer', name: input_name.value, template: select_template.value, templateParameters: templateParametersData, maxCPU: input_maxCPU.value, maxMemory: input_maxMemory.value, networkPort: input_networkPort.value })
+          let response = await sendRequest({ type: 'createContainer', name: input_name.value, template: select_template.value, templateParameters: templateParametersData, maxCPU: input_maxCPU.value, maxMemory: input_maxMemory.value, storage: input_storage.value, networkPort: input_networkPort.value })
         
           if (response.error) {
           

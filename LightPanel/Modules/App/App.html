@@ -1,6 +1,8 @@
 <html>
   <head>
     <meta charset="utf-8">
+
+    <link rel="stylesheet" href="/NodeModule/xterm/css/xterm.css" />
   </head>
 
   <style>
@@ -11,6 +13,11 @@
     @keyframes promptMessage_show {
       0% { border-radius: calc(calc(calc(100vw + 100vh) / 100) * 0.25); height: 0px }
       100% { border-radius: calc(calc(calc(100vw + 100vh) / 100) * 0.5); height: calc(calc(calc(100vw + 100vh) / 100) * 4.25) }
+    }
+
+    @keyframes changeLanguage_show {
+      0% { opacity: 0 }
+      100% { opacity: 1 }
     }
 
     ::-webkit-scrollbar {
@@ -55,12 +62,13 @@
   
   <body style="position: fixed; background-color: var(--background); margin: 0px"></body>
 
+  <script src="/NodeModule/xterm/lib/xterm.js"></script>
   <script src="/Script/SvgImage.js" type="module"></script>
 
   <script type="module">
     let start = performance.now()
 
-    import { loadTranslation, getTranslation } from '/Script/Translation.js'
+    import { loadTranslation, getTranslation, changeLanguage } from '/Script/Translation.js'
     import { Component, FontSize, setAttribute } from '/Script/UI.js'
     import { checkSession } from '/Script/Session.js'
     import { loadPage } from '/Script/PageAPI.js'
@@ -72,12 +80,15 @@
     let div = document.body.appendChild(Component.div({ style: { center: 'column', backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderStyle: 'none none solid none', boxSizing: 'border-box', height: '[3.5ps]' }}))
     div.appendChild(Component.text(FontSize.title, 'Light Panel', { style: { marginLeft: '[1ps]', cursor: 'pointer' }})).onclick = () => loadPage('Containers')
     let div2 = div.appendChild(Component.div({ style: { flex: 1, display: 'flex', flexDirection: 'row-reverse' }}))
-    div2.appendChild(Component.svgImage('/Image/Logout.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
-    div2.appendChild(Component.svgImage('/Image/Language.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
+    let div3 = div2.appendChild(Component.div({}))
+    div3.appendChild(Component.svgImage('/Image/Logout.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
+    let div4 = div2.appendChild(Component.div({}))
+    div4.onclick = () => changeLanguage()
+    div4.appendChild(Component.svgImage('/Image/Language.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
 
-    let div3 = document.body.appendChild(Component.div({ style: { display: 'flex', width: '100vw', height: 'calc(100vh - [3.5ps])' }}))
-    div3.appendChild(Component.div({ id: 'features', style: { flex: 'flex', flexDirection: 'column', backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderStyle: 'none solid none none', boxSizing: 'border-box', width: '[11ps]' }}))
-    div3.appendChild(Component.div({ id: 'page', style: { flex: 'flex', flexDirection: 'column', center: 'column', width: 'calc(100vw - [11ps])', overflowX: 'hidden', overflowY: 'auto' }}))
+    let div5 = document.body.appendChild(Component.div({ style: { display: 'flex', width: '100vw', height: 'calc(100vh - [3.5ps])' }}))
+    div5.appendChild(Component.div({ id: 'features', style: { flex: 'flex', flexDirection: 'column', backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderStyle: 'none solid none none', boxSizing: 'border-box', width: '[11ps]' }}))
+    div5.appendChild(Component.div({ id: 'page', style: { flex: 'flex', flexDirection: 'column', center: 'column', width: 'calc(100vw - [11ps])', height: 'calc(100vh - [3.5ps])', overflowX: 'hidden', overflowY: 'auto' }}))
     
     document.body.appendChild(Component.div({ id: 'promptMessages', style: { position: 'fixed', left: '0px', top: '0px', maxHeight: '100vh', overflow: 'hidden', zIndex: 999 }}))
   
