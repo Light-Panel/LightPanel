@@ -11,18 +11,16 @@
   * [安裝](#安裝)
 
 # Quick Start
-Quick Start 是一個 Ligth Panel 的工具，可以讓你不用寫任何程式就開始使用 Light Panel。
+Quick Start 是一個可以讓你不用寫任何程式就開始使用 Light Panel 的工具。
 
 ## 安裝
 > [!NOTE]
-> 使用下面的指令將會安裝 Light Panel 到你所在的目錄，你可以隨意更改工作目錄到你想要安裝的地方。
+> 使用下面的指令將會安裝 Quick Start 到你所在的目錄，你可以隨意更改工作目錄到你想要安裝的地方。
 
-**Linux / Windows**
+使用指令前請確保你已經安裝了 [Git](https://git-scm.com/) 與 [Node.js](https://nodejs.org/en)
 ```
-curl https://raw.githubusercontent.com/Light-Panel/LightPanel/main/Assets/Install.js | node
+git clone https://github.com/Light-Panel/QuickStart.git && node ./QuickStart/index.js
 ```
 
-**MacOS**
-```
-我們不支援 MacOS，因為 "MacOS is too expensive to be used as a server."
-```
+> [!WARNING]
+> **我們不支援 macOS**，因為 "MacOS is too expensive to be used as a server."
