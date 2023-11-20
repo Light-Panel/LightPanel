@@ -1,5 +1,4 @@
 # Light Panel
-
 一個簡單, 快速, 高自訂性的託管面板。
 
 > [!WARNING]
@@ -8,12 +7,13 @@
 官方 Discord - https://discord.gg/NDNe8C9pFs
 
 ## 目錄
+* [Quick Start](#quick-start)
+  * [安裝](#安裝)
 
-* [安裝](#安裝)
-* [快速開始](#快速開始)
+# Quick Start
+Quick Start 是一個 Ligth Panel 的工具，可以讓你不用寫任何程式就開始使用 Light Panel。
 
 ## 安裝
-
 > [!NOTE]
 > 使用下面的指令將會安裝 Light Panel 到你所在的目錄，你可以隨意更改工作目錄到你想要安裝的地方。
 
