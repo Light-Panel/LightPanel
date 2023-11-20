@@ -9,6 +9,7 @@
 ## 目錄
 * [Quick Start](#quick-start)
   * [安裝](#安裝)
+  * [選項](#選項)
 
 # Quick Start
 Quick Start 是一個可以讓你不用寫任何程式就開始使用 Light Panel 的工具。
@@ -19,8 +20,10 @@ Quick Start 是一個可以讓你不用寫任何程式就開始使用 Light Pane
 
 使用指令前請確保你已經安裝了 [Git](https://git-scm.com/) 與 [Node.js](https://nodejs.org/en)
 ```
-git clone https://github.com/Light-Panel/QuickStart.git && node ./QuickStart/index.js && node ./QuickStart/index.js
+git clone https://github.com/Light-Panel/QuickStart.git && node ./QuickStart/index.js
 ```
 
 > [!WARNING]
 > **我們不支援 macOS**，因為 "MacOS is too expensive to be used as a server."
+
+## 選項
