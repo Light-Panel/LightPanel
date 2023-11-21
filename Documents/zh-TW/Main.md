@@ -24,6 +24,6 @@ git clone https://github.com/Light-Panel/QuickStart.git && node ./QuickStart/ind
 ```
 
 > [!WARNING]
-> **我們不支援 macOS**，因為 "MacOS is too expensive to be used as a server."
+> **我們只支援 Linux，因為沒有人會拿其他操作系統來當伺服器。
 
 ## 選項
