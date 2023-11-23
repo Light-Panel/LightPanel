@@ -12,7 +12,7 @@
   * [選項](#選項)
 
 # Quick Start
-Quick Start 是一個可以讓你不用寫任何程式就開始使用 Light Panel 的工具。
+[Quick Start](https://github.com/Light-Panel/QuickStart) 是一個可以讓你不用寫任何程式就開始使用 Light Panel 的工具。
 
 ## 安裝
 > [!NOTE]
