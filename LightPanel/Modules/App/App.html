@@ -70,12 +70,14 @@
 
     import { loadTranslation, getTranslation, changeLanguage } from '/Script/Translation.js'
     import { Component, FontSize, setAttribute } from '/Script/UI.js'
+    import { loadShortkey } from '/Script/Shortkey.js'
     import { checkSession } from '/Script/Session.js'
     import { loadPage } from '/Script/PageAPI.js'
     import { loadTheme } from '/Script/Theme.js'
 
     await loadTranslation()
     await loadTheme()
+    loadShortkey()
 
     let div = document.body.appendChild(Component.div({ style: { center: 'column', backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderStyle: 'none none solid none', boxSizing: 'border-box', height: '[3.5ps]' }}))
     div.appendChild(Component.text(FontSize.title, 'Light Panel', { style: { marginLeft: '[1ps]', cursor: 'pointer' }})).onclick = () => loadPage('Containers')
@@ -87,7 +89,7 @@
     div4.appendChild(Component.svgImage('/Image/Language.svg', { style: { marginRight: '[1ps]', width: '[1.75ps]', cursor: 'pointer' }}))
 
     let div5 = document.body.appendChild(Component.div({ style: { display: 'flex', width: '100vw', height: 'calc(100vh - [3.5ps])' }}))
-    div5.appendChild(Component.div({ id: 'features', style: { flex: 'flex', flexDirection: 'column', backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderStyle: 'none solid none none', boxSizing: 'border-box', width: '[11ps]' }}))
+    div5.appendChild(Component.div({ id: 'features', style: { flex: 'flex', flexDirection: 'column', center: 'column', backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderStyle: 'none solid none none', boxSizing: 'border-box', width: '[11ps]' }}))
     div5.appendChild(Component.div({ id: 'page', style: { flex: 'flex', flexDirection: 'column', center: 'column', width: 'calc(100vw - [11ps])', height: 'calc(100vh - [3.5ps])', overflowX: 'hidden', overflowY: 'auto' }}))
     
     document.body.appendChild(Component.div({ id: 'promptMessages', style: { position: 'fixed', left: '0px', top: '0px', maxHeight: '100vh', overflow: 'hidden', zIndex: 999 }}))

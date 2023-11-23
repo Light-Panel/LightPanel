@@ -1,8 +1,7 @@
 import { displayFeatures, event, createInterval } from '/Script/PageAPI.js'
-import displayContainerState from '/Script/DisplayContainerState.js'
-import { socket, data, sendRequest } from '/Script/Session.js'
-import { encrypt, decrypt } from '/Script/Encryption.js'
+import displayContainerState from '/Script/ContainerState.js'
 import { getTranslation } from '/Script/Translation.js'
+import { data, sendRequest } from '/Script/Session.js'
 import { Component, FontSize } from '/Script/UI.js'
 import generateID from '/Script/GenerateID.js'
 import drawGraph from '/Script/Graph.js'
@@ -15,6 +14,7 @@ import drawGraph from '/Script/Graph.js'
     data.accountInfo = await sendRequest({ type: 'getAccountInfo' })
 
     if ((data.accountInfo.permissions.includes('manageContainers') || data.accountInfo.containers.includes(id)) && await sendRequest({ type: 'getContainerInfo', id }) !== undefined) {
+      window.document.title = `Light Panel | ${getTranslation('ui>>容器 - {id}', { id })}`
       displayFeatures('container')
 
       displayContainerState(id)

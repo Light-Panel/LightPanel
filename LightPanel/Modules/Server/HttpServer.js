@@ -19,6 +19,7 @@ module.exports = (core) => {
 
         let response
         if (reqPath[1] === 'GetAllLanguages') response = getAllLanguages()
+        else if (reqPath[1] === 'GetAllThemes') response = ['Default'].concat(fs.readdirSync(getPath(core.path, ['Themes'])))
         else if (reqPath[1] === 'CheckSession') response = core.session.checkSession(query.sessionID)
         else if (reqPath[1] === 'Login') response = core.account.login(query.name, query.password)
       

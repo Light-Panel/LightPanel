@@ -6,7 +6,7 @@ const getPath = require('./Tools/GetPath')
 
 //Check Environment (Packages, Permission, OS, etc...)
 module.exports = () => {
-  if (['linux', 'win32'].includes(os.platform())) {
+  if (os.platform() === 'linux') {
     if (!fs.existsSync(getPath(__dirname, ['<', '<', 'node_modules']))) {
       console.log('Installing packages')
   
@@ -15,6 +15,8 @@ module.exports = () => {
       console.log('Installation complete, please restart the process')
     
       process.exit()
-    } else if (os.platform() === 'linux' && process.getuid() !== 0) throw new Error(`Light Panel Need Root Permission`)
+    }
+
+		if (process.getuid() !== 0) throw new Error(`Light Panel Need Root Permission`)
   } else throw new Error(`Unsupported Platform: [${os.platform()}]`)
 }

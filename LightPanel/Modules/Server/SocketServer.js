@@ -55,8 +55,9 @@ module.exports = (core, httpServer) => {
           if (core.account.getAccountInfo(session.accountName).permissions.includes('manageContainers')) response = core.container.createContainer(request.name, request.template, request.templateParameters, request.maxCPU, request.maxMemory, request.storage, request.networkPort)
           else response = { error: true, content: 'Permission Denied' }
         }
-
-        else if (request.type === 'changeContainerState') {
+        
+				else if (request.type === 'saveAccountSettings') response = core.account.saveAccountSettings(session.accountName, request.settings)
+				else if (request.type === 'changeContainerState') {
           if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = await core.container.changeState(request.id)
           else response = { error: true, content: 'Permission Denied' }
         }

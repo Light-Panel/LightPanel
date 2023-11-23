@@ -52,6 +52,11 @@ class Component {
     image.setAttribute('src', '/Image/CaretUp.svg')
     let div4 = div.appendChild(createElement('div', parseOptions({ style: { backgroundColor: 'var(--mainColor_dark)', width: div.style.width, height: '0px', transitionDuration: '0.5s', overflowY: 'scroll' }}, options.options)))
     
+    if (options.selected !== undefined) {
+      selected.innerHTML = options.selected.label
+      div.value = options.selected.value
+    }
+
     items.forEach((item, index) => {
       let option = div4.appendChild(createElement('h1', parseOptions({ class: 'hover_select_option', innerHTML: item.label, style: { color: 'var(--textColor)', fontSize: selected.style.fontSize, margin: '0px', marginLeft: '[0.5ps]', marginTop: (index === 0) ? '[0.25ps]' : '[0.25ps]', marginBottom: (index === items.length-1) ? '[0.25ps]' : '0px' }}, options.option)))
     
@@ -98,6 +103,11 @@ class Component {
     input.addEventListener('focusout', () => input.style.backgroundColor = 'var(--mainColor_dark)')
 
     return input
+  }
+
+  //Checkbox
+  static checkbox (checked, options) {
+		return createElement('input', parseOptions({ type: 'checkbox', checked }, options))
   }
 
   //Container
@@ -175,8 +185,11 @@ function parseStyleValue (value) {
 //Merge Object
 function mergeObject (target, object) {
   Object.keys(object).forEach((item) => {
-    if (typeof object[item] === 'object' && object[item] !== null) target[item] = mergeObject(target[item], object[item])
-    else target[item] = object[item]
+    if (typeof object[item] === 'object' && object[item] !== null) {
+      if (target[item] === undefined) target[item] = {}
+
+			target[item] = mergeObject(target[item], object[item])
+		} else target[item] = object[item]
   })
 
   return target

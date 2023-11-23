@@ -30,6 +30,13 @@ module.exports = class {
 
             permissions: ['manageContainers', 'manageTemplates', 'manageUsers'],
             containers: [],
+            
+            settings: {
+              language: 'zh-TW',
+							theme: 'Default',
+							cachePage: true,
+							syncSettings: true
+						},
 
             shortcuts: {}
           }
@@ -57,7 +64,14 @@ module.exports = class {
       permissions,
       containers: [],
 
-      shortcuts: {}
+      settings: {
+        language: 'zh-TW',
+        theme: 'Default',
+        cachePage: true,
+				syncSettings: true
+      },
+
+      shortkeys: {}
     }
 
     return { error: false }
@@ -76,10 +90,26 @@ module.exports = class {
     else {
       return {
         permissions: this.data.accounts[name].permissions,
-        containers: (this.data.accounts[name].permissions.includes('manageContainers')) ? [] : this.data.accounts[name].containers
-      }
+        containers: (this.data.accounts[name].permissions.includes('manageContainers')) ? [] : this.data.accounts[name].containers,
+      
+        settings: this.data.accounts[name].settings
+			}
     }
   }
+
+	//Save Account Settings
+	saveAccountSettings (name, settings) {
+    if (this.data.accounts[name] === undefined) return { error: true, content: 'Account Not Found' }
+
+		if (typeof settings.language !== 'string') return { error: true, content: 'Parameter Type Error', key: 'language', type: 'string'  }
+	  else if (typeof settings.theme !== 'string') return { error: true, content: 'Parameter Type Error', key: 'theme', type: 'string' }
+    else if (typeof settings.cachePage !== 'boolean') return { error: true, content: 'Parameter Type Error', key: 'cachePage', type: 'boolean' }
+	  else if (typeof settings.syncSettings !== 'boolean') return { error: true, content: 'Parameter Type Error', key: 'syncSettings', type: 'boolean' }
+
+    this.data.accounts[name].settings = settings
+
+		return { error: false }
+	}
 }
 
 const { encrypt, decrypt } = require('./Tools/Encryption')

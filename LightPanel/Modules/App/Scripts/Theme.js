@@ -4,8 +4,9 @@ import { setCookie, getCookie } from '/Script/Cookie.js'
 import createElement from '/Script/CreateElement.js'
 
 //Load Theme
-async function loadTheme () {
-  if (getCookie('theme') === undefined) setCookie('theme', 'Default')
+async function loadTheme (theme) {
+	if (theme !== undefined) setCookie('theme', theme)
+	else if (getCookie('theme') === undefined) setCookie('theme', 'Default')
 
   let response = await (await fetch(`/Theme/${getCookie('theme')}`)).text()
 
