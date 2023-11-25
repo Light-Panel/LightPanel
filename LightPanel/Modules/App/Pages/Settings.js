@@ -1,6 +1,6 @@
+import { saveShortkeys, getUserShortkeys } from '/Script/Shortkey.js'
 import { showPromptMessage } from '/Script/PromptMessage.js'
 import { getTranslation } from '/Script/Translation.js'
-import { getUserShortkeys } from '/Script/Shortkey.js'
 import { displayFeatures } from '/Script/PageAPI.js'
 import { Component, FontSize } from '/Script/UI.js'
 import loadSettings from '/Script/LoadSettings.js'
@@ -70,6 +70,9 @@ import { event } from '/Script/PageAPI.js'
 			state = true
 			button.style.opacity = 0.5
 
+      let object = {}
+		  Object.keys(inputs).forEach((item) => object[item] = inputs[item].value)
+
 			if (checkbox_uploadSettings.checked) {
 				let response = await sendRequest({
 		      type: 'saveAccountSettings',
@@ -78,17 +81,17 @@ import { event } from '/Script/PageAPI.js'
 						theme: select_theme.value,
 	          cachePage: checkbox_cachePage.checked,
 				    syncSettings: checkbox_syncSettings.checked	
-					}
+					},
+					shortkeys: object
 				})
 			}
-		
 
 	    loadSettings({
 				language: select_language.value,
 				theme: select_theme.value,
 				cachePage: checkbox_cachePage.checked,
 				syncSettings: checkbox_syncSettings.checked
-			})
+			}, object)
 
 			showPromptMessage('var(--successColor)', getTranslation('ui>>成功套用設定'), getTranslation('ui>>部分設定需刷新頁面才會套用'))
 
@@ -101,4 +104,4 @@ import { event } from '/Script/PageAPI.js'
 	const checkbox_uploadSettings = div10.appendChild(Component.checkbox(true))
 })()
 
-const keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'control', 'alt', 'meta']
+const keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'enter', 'control', 'alt', 'meta']

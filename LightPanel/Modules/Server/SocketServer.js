@@ -56,7 +56,7 @@ module.exports = (core, httpServer) => {
           else response = { error: true, content: 'Permission Denied' }
         }
         
-				else if (request.type === 'saveAccountSettings') response = core.account.saveAccountSettings(session.accountName, request.settings)
+				else if (request.type === 'saveAccountSettings') response = core.account.saveAccountSettings(session.accountName, request.settings, request.shortkeys)
 				else if (request.type === 'changeContainerState') {
           if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = await core.container.changeState(request.id)
           else response = { error: true, content: 'Permission Denied' }

@@ -32,6 +32,7 @@ export default async (id) => {
       let response = await sendRequest({ type: 'changeContainerState', id })
 
       if (response.error) showPromptMessage('var(--errorColor)', getTranslation('ui>>無法改變容器的狀態'), getTranslation('ui>>請稍候再試'))
+      else updateTTY()
 
       state = false
       div6.style.opacity = 1

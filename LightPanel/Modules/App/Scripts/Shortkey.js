@@ -1,4 +1,4 @@
-export { loadShortkey, getUserShortkeys, shortkeyEvent, clearEvents }
+export { loadShortkeys, saveShortkeys, getUserShortkeys, shortkeyEvent, clearEvents }
 
 let shortkeys
 let events = {}
@@ -24,17 +24,28 @@ window.addEventListener('keyup', (e) => {
 })
 
 //Load Shortkey
-function loadShortkey () {
-  if (window.localStorage.getItem('shortkeys') === null) {
-    let defaultShortkeys = getDefaultShortkeys()
+function loadShortkeys () {
+  let defaultShortkeys = getDefaultShortkeys()
 
+	if (window.localStorage.getItem('shortkeys') === null || typeof JSON.parse(window.localStorage.getItem('shortkeys')) !== 'object') {
     let object = {}
     Object.keys(defaultShortkeys).forEach((item) => object[item] = defaultShortkeys[item].key)
 
     window.localStorage.setItem('shortkeys', JSON.stringify(object))
-  }
 
-  shortkeys = JSON.parse(window.localStorage.getItem('shortkeys'))
+		shortkeys = object
+  } else {
+    shortkeys = JSON.parse(window.localStorage.getItem('shortkeys'))
+
+		Object.keys(defaultShortkeys).forEach((item) => {
+			if (shortkeys[item] === undefined) shortkeys[item] = defaultShortkeys[item].key
+		})
+	}
+}
+
+//Save Shortkey
+function saveShortkeys (data) {
+  window.localStorage.setItem('shortkeys', JSON.stringify(data))
 }
 
 //Get Users Shortkeys
@@ -42,9 +53,7 @@ function getUserShortkeys () {
   let defaultShortkeys = getDefaultShortkeys()
 
   let object = {}
-  Object.keys(defaultShortkeys).forEach((item) => {
-    object[item] = { name: defaultShortkeys[item].name, key: shortkeys[item] }
-  })
+  Object.keys(defaultShortkeys).forEach((item) => object[item] = { name: defaultShortkeys[item].name, key: shortkeys[item] })
 
   return object
 }

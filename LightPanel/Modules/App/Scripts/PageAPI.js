@@ -29,6 +29,8 @@ async function loadPage (name, updateFeatures) {
   if (!state) {
 		state = true
 
+		console.log(true)
+
 		window.history.pushState({}, null, name)
  
 		let data
@@ -61,10 +63,10 @@ async function loadPage (name, updateFeatures) {
 
   	if (updateFeatures === true) featureType = undefined
 
-  	if (data === 'Resource Not Found') await loadPage('Containers')
-  	else document.body.appendChild(createElement('script', { id: 'script', innerHTML: data, type: 'module' }))
-	
     state = false
+
+  	if (data === 'Resource Not Found') await loadPage('Containers')
+	  else document.body.appendChild(createElement('script', { id: 'script', innerHTML: data, type: 'module' }))
 	}
 }
 
@@ -72,7 +74,7 @@ let featuresPageName = []
 
 window.addEventListener('keydown', (e) => {
   if (!isNaN(+e.key)) {
-    if (featuresPageName[+e.key-1] !== undefined) loadPage(featuresPageName[+e.key-1])
+    if (document.activeElement === document.body && featuresPageName[+e.key-1] !== undefined) loadPage(featuresPageName[+e.key-1])
 	}
 })
 
@@ -103,7 +105,7 @@ function displayFeatures (type) {
 
 //Add Feture To Feture Tab
 function addFeature (label, image, pageName) {
-  let div = document.getElementById('features').appendChild(Component.div({ style: { center: 'column', backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[0.5ps]', width: '[10ps]', height: '[2.5ps]', cursor: 'pointer' }}))
+  let div = document.getElementById('features').appendChild(Component.div({ style: { center: 'column', backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[0.5ps]', width: '[10ps]', height: '[2.5ps]', overflow: 'hidden', cursor: 'pointer' }}))
   if (image !== undefined) div.appendChild(Component.svgImage(`/Image/${image}`, { style: { height: '[1.25ps]', marginLeft: '[0.5ps]' }}))
   div.appendChild(Component.text(FontSize.subTitle2, label, { style: { marginLeft: '[0.5ps]' }}))
 

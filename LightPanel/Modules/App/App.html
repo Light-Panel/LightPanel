@@ -70,14 +70,14 @@
 
     import { loadTranslation, getTranslation, changeLanguage } from '/Script/Translation.js'
     import { Component, FontSize, setAttribute } from '/Script/UI.js'
-    import { loadShortkey } from '/Script/Shortkey.js'
+    import { loadShortkeys } from '/Script/Shortkey.js'
     import { checkSession } from '/Script/Session.js'
     import { loadPage } from '/Script/PageAPI.js'
     import { loadTheme } from '/Script/Theme.js'
 
     await loadTranslation()
     await loadTheme()
-    loadShortkey()
+    loadShortkeys()
 
     let div = document.body.appendChild(Component.div({ style: { center: 'column', backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderStyle: 'none none solid none', boxSizing: 'border-box', height: '[3.5ps]' }}))
     div.appendChild(Component.text(FontSize.title, 'Light Panel', { style: { marginLeft: '[1ps]', cursor: 'pointer' }})).onclick = () => loadPage('Containers')

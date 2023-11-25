@@ -27,7 +27,7 @@ async function checkSession () {
       
       let state = false
       
-      const button = div2.appendChild(Component.button(getTranslation('ui>>登入'), login, { style: { marginBottom: '[1.5ps]', paddingLeft: '[1ps]', paddingRight: '[1ps]' }}))
+      const button_login = div2.appendChild(Component.button(getTranslation('ui>>登入'), login, { style: { marginBottom: '[1.5ps]', paddingLeft: '[1ps]', paddingRight: '[1ps]' }}))
       shortkeyEvent('fastComplete', () => login())			
 
 			async function login () {
@@ -36,7 +36,7 @@ async function checkSession () {
           else if (input_password.value === '') showPromptMessage('var(--errorColor)', getTranslation('ui>>無法登入'), getTranslation('ui>>請輸入密碼'))
           else {
             state = true
-            button.style.opacity = 0.5
+            button_login.style.opacity = 0.5
 
             let response = await (await fetch(`/Api/Login?name=${input_name.value}&password=${input_password.value}`)).json()
             
@@ -45,7 +45,7 @@ async function checkSession () {
               else if (response.content === 'Wrong Password') showPromptMessage('var(--errorColor)', getTranslation('ui>>登入失敗'), getTranslation('ui>>密碼錯誤'))
 
               state = false
-              button.style.opacity = 1
+              button_login.style.opacity = 1
             } else {
               window.localStorage.setItem('sessionID', response.session.id)
               window.localStorage.setItem('sessionSecret', response.session.secret)
@@ -82,8 +82,7 @@ async function checkSession () {
         data.accountInfo = await sendRequest({ type: 'getAccountInfo' })
 
         console.log(getTranslation('log>>- Light Panel -\n\n版本: {version}', { version: data.panelInfo.version, platform: data.panelInfo.platform, toltalMemory: data.panelInfo.toltalMemory }))
-
-				if (data.accountInfo.settings.syncSettings === true) loadSettings(data.accountInfo.settings)
+				if (getCookie('syncSettings') === 'true') loadSettings(data.accountInfo.settings, data.accountInfo.shortkeys)
 
         resolve()
 			})

@@ -38,7 +38,7 @@ module.exports = class {
 							syncSettings: true
 						},
 
-            shortcuts: {}
+            shortkeys: {}
           }
         },
         secret,
@@ -88,25 +88,29 @@ module.exports = class {
   getAccountInfo (name) {
     if (this.data.accounts[name] === undefined) return undefined
     else {
-      return {
+      return { 
         permissions: this.data.accounts[name].permissions,
-        containers: (this.data.accounts[name].permissions.includes('manageContainers')) ? [] : this.data.accounts[name].containers,
+        containers: (this.data.accounts[name].permissions.includes('manageContainers')) ? Object.keys(this.#core.container.data) : this.data.accounts[name].containers,
       
-        settings: this.data.accounts[name].settings
+        settings: this.data.accounts[name].settings,
+				shortkeys: this.data.accounts[name].shortkeys
 			}
     }
   }
 
 	//Save Account Settings
-	saveAccountSettings (name, settings) {
+	saveAccountSettings (name, settings, shortkeys) {
     if (this.data.accounts[name] === undefined) return { error: true, content: 'Account Not Found' }
 
 		if (typeof settings.language !== 'string') return { error: true, content: 'Parameter Type Error', key: 'language', type: 'string'  }
-	  else if (typeof settings.theme !== 'string') return { error: true, content: 'Parameter Type Error', key: 'theme', type: 'string' }
-    else if (typeof settings.cachePage !== 'boolean') return { error: true, content: 'Parameter Type Error', key: 'cachePage', type: 'boolean' }
-	  else if (typeof settings.syncSettings !== 'boolean') return { error: true, content: 'Parameter Type Error', key: 'syncSettings', type: 'boolean' }
+	  if (typeof settings.theme !== 'string') return { error: true, content: 'Parameter Type Error', key: 'theme', type: 'string' }
+    if (typeof settings.cachePage !== 'boolean') return { error: true, content: 'Parameter Type Error', key: 'cachePage', type: 'boolean' }
+	  if (typeof settings.syncSettings !== 'boolean') return { error: true, content: 'Parameter Type Error', key: 'syncSettings', type: 'boolean' }
+
+		if (typeof shortkeys !== 'object') return { error: true, content: 'Parameter Type Error', key: 'shortkeys', type: 'object' }
 
     this.data.accounts[name].settings = settings
+		this.data.accounts[name].shortkeys = shortkeys
 
 		return { error: false }
 	}
@@ -114,3 +118,4 @@ module.exports = class {
 
 const { encrypt, decrypt } = require('./Tools/Encryption')
 const getPath = require('./Tools/GetPath')
+

@@ -98,7 +98,7 @@ import { Component, FontSize } from '/Script/UI.js'
           let response = await sendRequest({ type: 'createContainer', name: input_name.value, template: select_template.value, templateParameters: templateParametersData, maxCPU: input_maxCPU.value, maxMemory: input_maxMemory.value, storage: input_storage.value, networkPort: input_networkPort.value })
         
           if (response.error) {
-          
+            console.log(response) 
           } else loadPage(`Container?id=${response.id}`)
         }
       }

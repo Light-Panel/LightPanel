@@ -19,7 +19,7 @@ import drawGraph from '/Script/Graph.js'
 
       displayContainerState(id)
 
-      let feature = new URLSearchParams(window.location.search).get('feature')
+			let feature = new URLSearchParams(window.location.search).get('feature')
 
       let pageData
       if (feature === 'state' || feature === null) pageData = await (await fetch('/Page/Container_State')).text()

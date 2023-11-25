@@ -25,7 +25,7 @@ module.exports = class {
           let id = item.Name.split('-')[1]
 
           if (this.data[id] === undefined) Docker.stopContainer(`lightpanel-${id}`)
-          else this.addRecord(id, +item.CPUPerc.replace('%', ''), parseMemoryUsage(item.MemUsage))
+          else this.addRecord(id, parseInt((100/this.data[id].maxCPU)*(+item.CPUPerc.replace('%', ''))).toFixed(1), parseMemoryUsage(item.MemUsage))
         }
       })
 
