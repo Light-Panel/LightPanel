@@ -27,3 +27,7 @@ git clone https://github.com/Light-Panel/QuickStart.git && node ./QuickStart/ind
 > **我們只支援 Linux**，因為沒有人會拿其他操作系統來當伺服器。
 
 ## 選項
+你可以使用 QuickStart 資料夾中的 Options.json 來改變一些設定。
+
+* `port <number>` | 面板使用的網路端口
+* `language <string>` | 伺服器端的語言
