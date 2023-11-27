@@ -32,7 +32,10 @@ export default async (id) => {
       let response = await sendRequest({ type: 'changeContainerState', id })
 
       if (response.error) showPromptMessage('var(--errorColor)', getTranslation('ui>>無法改變容器的狀態'), getTranslation('ui>>請稍候再試'))
-      else updateTTY()
+      else {
+				await update()
+				await updateTTY()
+			}
 
       state = false
       div6.style.opacity = 1
@@ -43,7 +46,28 @@ export default async (id) => {
 
   //Update Container Info
   async function update () {
-    data.containerInfo = await sendRequest({ type: 'getContainerInfo', id })
+    let response = await sendRequest({ type: 'getContainerInfo', id })
+
+		if (data.containerInfo === undefined || data.containerInfo.id !== response.id) {
+      data.containerInfo = response
+
+			response = await sendRequest({ type: 'getContainerRecord', id })
+
+			data.containerInfo.cpuRecord = response.cpu
+			data.containerInfo.memoryRecord = response.memory
+		} else {
+			data.containerInfo.state = response.state
+			data.containerInfo.cpu = response.cpu
+      data.containerInfo.memory = response.memory
+			data.containerInfo.storage = response.storage
+			data.containerInfo.networkPort = response.networkPort
+
+			data.containerInfo.cpuRecord.push(data.containerInfo.cpu)
+			data.containerInfo.memoryRecord.push(data.containerInfo.memory)
+
+			if (data.containerInfo.cpuRecord.length > 120) data.containerInfo.cpuRecord.splice(0, 1)
+			if (data.containerInfo.memoryRecord.length > 120) data.containerInfo.memoryRecord.splice(0, 1)
+		}
 
     if (data.containerInfo.state !== oldContainerState) {
       oldContainerState = data.containerInfo.state
@@ -59,13 +83,13 @@ export default async (id) => {
     text_state.innerHTML = `${getTranslation('ui>>狀態')}: ${getTranslation(`ui>>${data.containerInfo.state}`)}`
     text_networkPort.innerHTML = `${getTranslation('ui>>網路端口')}: ${data.containerInfo.networkPort}`
     text_name.innerHTML = data.containerInfo.name
-    text_cpu.innerHTML = `CPU: ${data.containerInfo.cpuRecord[data.containerInfo.cpuRecord.length-1]}%`
-    text_memory.innerHTML = `${getTranslation('ui>>記憶體')}: ${data.containerInfo.memoryRecord[data.containerInfo.memoryRecord.length-1]}MB / ${data.containerInfo.maxMemory}MB`
+    text_cpu.innerHTML = `CPU: ${data.containerInfo.cpu}%`
+    text_memory.innerHTML = `${getTranslation('ui>>記憶體')}: ${data.containerInfo.memory}MB / ${data.containerInfo.maxMemory}MB`
   }
 
   //Update TTY Connection
   async function updateTTY () {
-    if (data.ttyConnection === undefined) {
+		if (data.ttyConnection === undefined) {
       data.ttyConnection = {
         connected: false,
   
@@ -113,8 +137,14 @@ export default async (id) => {
   
         socket.on('request', data.ttyConnection.handler)
       }
+
+			data.ttyConnection.callEvent('connect')
     } else {
-    
+      data.ttyConnection.connected = false
+			data.ttyConnection.id = undefined
+			data.ttyConnection.token = undefined
+
+			data.ttyConnection.callEvent('disconnect')
     }
   }
 

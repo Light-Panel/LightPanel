@@ -43,7 +43,10 @@ module.exports = (core, httpServer) => {
         else if (request.type === 'getContainerInfo') {
           if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = core.container.getContainerInfo(request.id)
           else response = { error: true, content: 'Permission Denied' }
-        } else if (request.type === 'getContainerShortcuts') {
+        } else if (request.type === 'getContainerRecord') {
+          if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = core.container.getContainerRecord(request.id)
+          else response = { error: true, content: 'Permission Denied' }
+				} else if (request.type === 'getContainerShortcuts') {
           if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = core.container.getContainerShortcuts(request.id)
           else response = { error: true, content: 'Permission Denied' }
         } else if (request.type === 'getContainerLog') {

@@ -13,7 +13,7 @@ let timers = []
 
 setInterval(() => {
   timers.forEach((item) => {
-    if (performance.now()-item.lastUpdateTime > item.interval) {
+		if (performance.now()-item.lastUpdateTime > item.interval) {
       item.lastUpdateTime = performance.now()
 
       item.callback()
@@ -28,8 +28,6 @@ let state = false
 async function loadPage (name, updateFeatures) {
   if (!state) {
 		state = true
-
-		console.log(true)
 
 		window.history.pushState({}, null, name)
  

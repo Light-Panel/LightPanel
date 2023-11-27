@@ -150,10 +150,20 @@ module.exports = class {
       storage: this.data[id].storage,
       networkPort: this.data[id].networkPort,
 
-      cpuRecord: (this.recordData[id] === undefined) ? [0] : this.recordData[id].cpu,
-      memoryRecord: (this.recordData[id] === undefined) ? [0] : this.recordData[id].memory,
+			cpu: (this.recordData[id] === undefined) ? 0 : this.recordData[id].cpu[this.recordData[id].cpu.length-1],
+      memory: (this.recordData[id] === undefined) ? 0 : this.recordData[id].memory[this.recordData[id].memory.length-1]
     }
   }
+
+	//Get Container Record
+	getContainerRecord(id) {
+    if (this.data[id] === undefined) return undefined
+
+		return {
+			cpu: (this.recordData[id] === undefined) ? [0] : this.recordData[id].cpu,
+			memory: (this.recordData[id] === undefined) ? [0] : this.recordData[id].memory
+		}
+	}
 
   //Get Container Shortcuts
   getContainerShortcuts (id) {
