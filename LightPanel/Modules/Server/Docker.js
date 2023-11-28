@@ -22,7 +22,7 @@ module.exports = class {
   static async getContainersState () {
     let data = (await executeCommand(['docker', 'stats', '--no-stream', '--format', '{{ json . }},'])).message
 
-    return JSON.parse(`[${data.substring(0, data.length-2)}]`)
+    return (data === undefined) ? [] : JSON.parse(`[${data.substring(0, data.length-2)}]`)
   }
 
   //Get Container TTY
