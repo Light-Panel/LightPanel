@@ -10,7 +10,7 @@ export default async (id) => {
   const page = document.getElementById('page')
   const script = document.getElementById('script')
 
-  const div = page.appendChild(Component.div({ style: { flexShrink: 0, display: 'flex', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[1ps]', width: 'calc(100vw - [13ps])', overflow: 'hidden' }}))
+  const div = page.appendChild(Component.div({ style: { flexShrink: 0, display: 'flex', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[0.5ps]', width: 'calc(100vw - [12ps])', overflow: 'hidden' }}))
   const div2 = div.appendChild(Component.div({ style: { flex: 1 }}))
   const text_name = div2.appendChild(Component.text(FontSize.title2, '', { style: { marginLeft: '[1ps]', marginTop: '[0.75ps]' }}))
   const div3 = div2.appendChild(Component.div({ style: { display: 'flex' }}))
@@ -123,22 +123,25 @@ export default async (id) => {
       }
     }
 
-    if (data.containerInfo.state === 'running' && (!data.ttyConnection.connected || id !== data.ttyConnection.id)) {
-      let response = await sendRequest({ type: 'connectTTY', id })
+    if (data.containerInfo.state === 'running') {
+      if (!data.ttyConnection.connected || id !== data.ttyConnection.id) {
 
-      if (response.error) {
-        showPromptMessage('var(--errorColor)', getTranslation('ui>>無法連接到控制台，正在重試'), getTranslation('ui>>如果持續出現此錯誤，請嘗試刷新頁面'))
+				let response = await sendRequest({ type: 'connectTTY', id })
+
+      	if (response.error) {
+      	  showPromptMessage('var(--errorColor)', getTranslation('ui>>無法連接到控制台，正在重試'), getTranslation('ui>>如果持續出現此錯誤，請嘗試刷新頁面'))
       
-        setTimeout(() => updateTTY(), 1000)
-      } else {
-        data.ttyConnection.connected = true
-        data.ttyConnection.id = id
-        data.ttyConnection.token = (await sendRequest({ type: 'connectTTY', id })).token
+     	    setTimeout(() => updateTTY(), 1000)
+      	} else {
+      	  data.ttyConnection.connected = true
+      	  data.ttyConnection.id = id
+      	  data.ttyConnection.token = (await sendRequest({ type: 'connectTTY', id })).token
   
-        socket.on('request', data.ttyConnection.handler)
-      }
+          socket.on('request', data.ttyConnection.handler)
+      	}
 
-			data.ttyConnection.callEvent('connect')
+			 data.ttyConnection.callEvent('connect')
+			}
     } else {
       data.ttyConnection.connected = false
 			data.ttyConnection.id = undefined

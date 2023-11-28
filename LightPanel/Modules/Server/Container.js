@@ -25,7 +25,7 @@ module.exports = class {
           let id = item.Name.split('-')[1]
 
           if (this.data[id] === undefined) Docker.stopContainer(`lightpanel-${id}`)
-          else this.addRecord(id, parseInt((100/this.data[id].maxCPU)*(+item.CPUPerc.replace('%', ''))).toFixed(1), parseMemoryUsage(item.MemUsage))
+          else this.addRecord(id, +parseInt((100/this.data[id].maxCPU)*(+item.CPUPerc.replace('%', ''))).toFixed(1), parseMemoryUsage(item.MemUsage))
         }
       })
 
@@ -169,7 +169,10 @@ module.exports = class {
   getContainerShortcuts (id) {
     if (this.data[id] === undefined) return undefined
 
-    return this.data[id].shortcuts
+    return {
+			templateParameters: this.data[id].templateParameters,
+			shortcuts: this.data[id].shortcuts
+		}
   }
 
   //Check Container State

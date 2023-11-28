@@ -1,5 +1,6 @@
 import { displayFeatures, event, createInterval } from '/Script/PageAPI.js'
 import displayContainerState from '/Script/ContainerState.js'
+import applyParameters from '/Script/ApplyParameters.js'
 import { getTranslation } from '/Script/Translation.js'
 import { data, sendRequest } from '/Script/Session.js'
 import { Component, FontSize } from '/Script/UI.js'
@@ -25,8 +26,6 @@ import drawGraph from '/Script/Graph.js'
       if (feature === 'state' || feature === null) pageData = await (await fetch('/Page/Container_State')).text()
       else if (feature === 'console') pageData = await (await fetch('/Page/Container_Console')).text()
       else window.location.href = `/Container?id=${id}`
-
-      data.containerShortcuts = await sendRequest({ type: 'getContainerShortcuts', id })
 
       eval(pageData)
     } else window.location.href = '/Containers'

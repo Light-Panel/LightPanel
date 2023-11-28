@@ -1,17 +1,9 @@
 const page = document.getElementById('page')
 
-const div = page.appendChild(Component.div({ style: { display: 'flex', flexDirection: 'column', center: 'column', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[1ps]', marginBottom: '[1ps]', width: 'calc(100vw - [13ps])', height: 'calc(100vh - [2ps])' }}))
-const div2 = div.appendChild(Component.div({ style: { backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[1ps]', paddingLeft: '[1ps]', paddingTop: '[0.75ps]', paddingBottom: '[0.75ps]', width: 'calc(100vw - [15ps])', height: 'calc(100vh - [12ps])', overflowY: 'scroll' }}))
-const div3 = div.appendChild(Component.div({ style: { display: 'flex', width: 'calc(100vw - [15ps])', overflow: 'hidden' }}))
-const input = div.appendChild(Component.input('text', '', { style: { marginBottom: '[1ps]', width: 'calc(100vw - [15ps])' }}))
-
-console.log(data.containerShortcuts)
-
-Object.keys(data.containerShortcuts).forEach((item) => {
-  div3.appendChild(Component.text(FontSize.title3, item, { style: { backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[0.5ps]', marginBottom: '[0.5ps]', padding: '[0.1ps] [0.5ps]', cursor: 'pointer' }})).onclick = () => {
-  
-  }
-})
+const div = page.appendChild(Component.div({ style: { display: 'flex', flexDirection: 'column', center: 'column', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[0.5ps]', marginBottom: '[0.5ps]', width: 'calc(100vw - [12ps])' }}))
+const div2 = div.appendChild(Component.div({ style: { backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[1ps]', paddingLeft: '[1ps]', paddingTop: '[0.75ps]', paddingBottom: '[0.75ps]', width: 'calc(100vw - [14ps])', height: 'calc(100vh - [11.25ps])', overflowY: 'scroll' }}))
+const div3 = div.appendChild(Component.div({ style: { display: 'flex', width: 'calc(100vw - [14ps])', overflow: 'hidden' }}))
+const input = div.appendChild(Component.input('text', '', { style: { marginBottom: '[1ps]', width: 'calc(100vw - [14ps])' }}))
 
 //Load TTY
 async function loadTTY () {
@@ -57,7 +49,7 @@ async function loadTTY () {
 
 	function updateTTY () {
     if (data.ttyConnection.connected) {
-      terminal.element.style.filter = ''
+      terminal.element.style.filter = null
 			terminal.element.style.cursor = null
 		} else {
 			terminal.element.style.filter = 'blur(3px)'
@@ -69,8 +61,21 @@ async function loadTTY () {
 
 	updateTTY()
 
+	data.ttyConnection.event('connect', () => console.log(true))
 	data.ttyConnection.event('connect', updateTTY)
 	data.ttyConnection.event('disconnect', updateTTY)
 }
 
+//Load Shortcuts
+async function loadShortcuts () {
+ data.containerShortcuts = await sendRequest({ type: 'getContainerShortcuts', id })
+
+	Object.keys(data.containerShortcuts.shortcuts).forEach((item) => {
+  	event(div3.appendChild(Component.text(FontSize.title3, item, { style: { backgroundColor: 'var(--mainColor)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginRight: '[0.5ps]', marginTop: '[0.5ps]', marginBottom: '[0.5ps]', padding: '[0.1ps] [0.5ps]', cursor: 'pointer' }})), 'click', () => {
+			sendRequest({ type: 'ttyInput', id, data: `${applyParameters(data.containerShortcuts.shortcuts[item], data.containerShortcuts.templateParameters)}\r` })
+		})
+	})
+}
+
 loadTTY()
+loadShortcuts()
