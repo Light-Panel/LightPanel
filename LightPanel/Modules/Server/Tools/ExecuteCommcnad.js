@@ -18,6 +18,6 @@ module.exports = async (command, callback) => {
       if (callback !== undefined) callback(data.toString())
     })
 
-    childProcess.on('exit', (code) => resolve({ code, message: lastMessage.toString() }))
+    childProcess.on('exit', (code) => resolve({ code, message: (lastMessage === undefined) ? undefined : lastMessage.toString() }))
   })
 }
