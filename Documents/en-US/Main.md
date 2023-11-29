@@ -18,7 +18,7 @@ Official Discord - https://discord.gg/NDNe8C9pFs
 ## Dependence
 - Linux Server (Ubuntu 20.04/22.04 Suggested)
 - Git (Latest)
-- Node.js (v18+)
+- Node.js (v18+) with suitable Node Package Manager
 - Docker (Latest)
 
 ## Install
