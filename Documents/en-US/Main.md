@@ -1,31 +1,40 @@
 # Light Panel
-A simple, fast, highly customizable hosting panel.
+A Simple, Fast, Customizable Hosting Panel.
 
 > [!WARNING]
-> Light Panel is base on Docker, this mean every project you host on Light Panel will be run in Docker container.
+> Light Panel is based on Docker, every instance will be hosted in Docker Container.
 
-## 目錄
+Official Discord - https://discord.gg/NDNe8C9pFs
+
+## Table of Content
 * [Quick Start](#quick-start)
-  * [Install](#Install)
-  * [Options](#Options)
- 
+  * [Dependence](#dependence)
+  * [Install](#install)
+  * [Options](#options)
+
 # Quick Start
-[Quick Start](https://github.com/Light-Panel/QuickStart) is a tool that allows you to start using Light Panel without writing any code.
+[Quick Start](https://github.com/Light-Panel/QuickStart) is a tool for you to use Light Panel without any coding.
+
+## Dependence
+- Linux Server (Ubuntu 20.04/22.04 Suggested)
+- Git (Latest)
+- Node.js (v18+)
+- Docker (Latest)
 
 ## Install
 > [!NOTE]
-> Use the command below will install Quick Start to your current directory, you can change your current directory to any location that you want to install Quick Start.
+> Using the following command will install Quick Start to your directory. You can freely change the working directory to where you want to install it.
 
-Before using the command, please make sure you already installed [Git](https://git-scm.com/) and [Node.js](https://nodejs.org/en) and [Docker](https://docs.docker.com/engine/install/)
+Make sure you have installed [Git](https://git-scm.com/), [Node.js](https://nodejs.org/en) and [Docker](https://docs.docker.com/engine/install/) before installing.
 ```
 git clone https://github.com/Light-Panel/QuickStart.git && node ./QuickStart/index.js
 ```
 
 > [!WARNING]
-> **We only supported Linux**, becuase ~~no one will use other OS as a server~~.
+> **Linux is the only supported Operating System.**
 
 ## Options
-You can change options by changing the Options.json file in QuickStart directory.
+You can use Options.json in the QuickStart folder to change some settings.
 
-* `port <number>` | The network port that the panel used
-* `language <string>` | Backend language
+* `port <number>` | Port for the Panel
+* `language <string>` | Language for the server-side
