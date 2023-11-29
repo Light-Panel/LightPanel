@@ -22,4 +22,10 @@ git clone https://github.com/Light-Panel/QuickStart.git && node ./QuickStart/ind
 ```
 
 > [!WARNING]
-> **We only supported Linux**, becuase ~~no one will use other os as a server~~.
+> **We only supported Linux**, becuase ~~no one will use other OS as a server~~.
+
+## Options
+You can change options by changing the Options.json file in QuickStart directory.
+
+* `port <number>` | The network port that the panel used
+* `language <string>` | Backend language
