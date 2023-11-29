@@ -18,7 +18,7 @@
 > [!NOTE]
 > 使用下面的指令將會安裝 Quick Start 到你所在的目錄，你可以隨意更改工作目錄到你想要安裝的地方。
 
-使用指令前請確保你已經安裝了 [Git](https://git-scm.com/) 與 [Node.js](https://nodejs.org/en)
+使用指令前請確保你已經安裝了 [Git](https://git-scm.com/) 與 [Node.js](https://nodejs.org/en) 與 [Docker](https://docs.docker.com/engine/install/)
 ```
 git clone https://github.com/Light-Panel/QuickStart.git && node ./QuickStart/index.js
 ```
