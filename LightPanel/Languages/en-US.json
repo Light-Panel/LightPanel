@@ -1,0 +1,54 @@
+{
+  "info": {
+    "name": "English (US)",
+    "flag": "🇺🇸"
+  },
+  "content": {
+    "server": {
+      "log": {
+        "running": "Running",
+        "complete": "Complete",
+        "warn": "Warning",
+        "error": "Error",
+        "hint": "Hint",
+
+        "- Light Panel -\n\n版本: {version}\n平台: {platform}\n\n面板端口: {port}\n": "- Light Panel -\n\nVersion: {version}\nPlatform: {platform}\n\nPanel Port: {port}\n",
+
+        "正在啟動伺服器 (端口: {port})": "Starting server (Port: {port})",
+        "成功啟動伺服器 (花費: {time}ms)": "Started Server (Time: {time}ms)",
+        "檢測到 DoS 攻擊，將在未來的 5 分鐘內阻擋來自 {address} 的請求 (平均每秒 {averageRequestPerSecond} 個請求)": "DoS attack detected, blocking request from {address} for 5 minutes (Average PPS: {averageRequestPerSecond})"
+      },
+      "error": {
+        "找不到資料夾 {path}": "Cannot find directory {path}",
+        "{path} 不是一個資料夾": "{path} is not a directory",
+        "找不到日誌類型 ${type}": "Cannot find log type ${type}"
+      }
+    },
+    "app": {
+      "log": {
+        "面板": "Panel",
+        
+        "框架加載完成 (花費: {time}ms)": "Loaded Framework (Time: {time}ms)"
+      },
+      "ui": {
+        "登入": "Login",
+        "帳號名": "Username",
+        "密碼": "Password",
+        "無法登入": "Unable to login",
+        "請輸入帳號名": "Please type the Username",
+        "請輸入密碼": "Please type the Password",
+        "登入失敗": "Login Failed",
+        "找不到該帳號": "Cannot find your account",
+        "密碼錯誤": "Incorrect Password",
+
+        "容器": "Container",
+        "範本": "Sample",
+        "用戶管理": "User Management",
+        "設定": "Settings",
+
+        "搜尋容器": "Search Container",
+        "創建容器": "Create Container"
+      }
+    }
+  }
+}
