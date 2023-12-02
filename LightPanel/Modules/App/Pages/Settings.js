@@ -17,14 +17,14 @@ import { event } from '/Script/PageAPI.js'
   let allLanguages = await (await fetch('/Api/GetAllLanguages')).json()
   let allThemes = await (await fetch('Api/GetAllThemes')).json()
 
-  const div = page.appendChild(Component.div({ style: { display: 'flex', marginTop: '[1ps]', width: 'calc(100vw - [13ps])' }}))
-  const div2 = div.appendChild(Component.div({ style: { flex: 1, backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginRight: '[1ps]' }}))
+  const div = page.appendChild(Component.div({ style: { display: 'flex', marginTop: '[0.5ps]', width: 'calc(100vw - [12ps])' }}))
+  const div2 = div.appendChild(Component.div({ style: { flex: 1, backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginRight: '[0.5ps]' }}))
   div2.appendChild(Component.text(FontSize.title2, getTranslation('ui>>語言'), { style: { marginLeft: '[1ps]', marginTop: '[0.75ps]', marginBottom: '[0.5ps]' }}))
   let select_language = div2.appendChild(Component.select(Object.keys(allLanguages).map((item) => {return { label: `${allLanguages[item].flag} ${allLanguages[item].name}`, value: item }}), { selected: { label: `${allLanguages[getCookie('language')].flag} ${allLanguages[getCookie('language')].name}`, value: getCookie('language')}, main: { style: { marginLeft: '[1ps]', marginBottom: '[1ps]', width: '[10ps]' }}}))
   const div3 = div.appendChild(Component.div({ style: { flex: 1, backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box' }}))
   div3.appendChild(Component.text(FontSize.title2, getTranslation('ui>>主題'), { style: { marginLeft: '[1ps]', marginTop: '[0.75ps]', marginBottom: '[0.5ps]' }}))
   let select_theme = div3.appendChild(Component.select(allThemes.map((item) => { return { label: item, value: item }}), { selected: { label: getCookie('theme'), value: getCookie('theme') }, main: { style: { marginLeft: '[1ps]', marginBottom: '[1ps]', width: '[10ps]' }}}))
-  const div4 = page.appendChild(Component.div({ style: { flex: 1, backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[1ps]', width: 'calc(100vw - [13ps])' }}))
+  const div4 = page.appendChild(Component.div({ style: { flex: 1, backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[0.5ps]', width: 'calc(100vw - [12ps])' }}))
   div4.appendChild(Component.text(FontSize.title2, getTranslation('ui>>快捷鍵'), { style: { marginLeft: '[1ps]', marginTop: '[0.75ps]' }}))
 
   let allShortKey = getUserShortkeys()
@@ -50,7 +50,7 @@ import { event } from '/Script/PageAPI.js'
     })
   })
 
-  const div5 = page.appendChild(Component.div({ style: { display: 'flex', marginTop: '[1ps]', marginBottom: '[1ps]', width: 'calc(100vw - [13ps])' }}))
+  const div5 = page.appendChild(Component.div({ style: { display: 'flex', marginTop: '[0.5ps]', marginBottom: '[0.5ps]', width: 'calc(100vw - [12ps])' }}))
   const div6 = div5.appendChild(Component.div({ style: { flex: 1, backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginRight: '[1ps]' }}))
   div6.appendChild(Component.text(FontSize.title2, getTranslation('ui>>其他'), { style: { marginLeft: '[1ps]', marginTop: '[0.75ps]', marginBottom: '[0.5ps]' }}))
   const div7 = div6.appendChild(Component.div({ style: { display: 'flex', center: 'column', marginLeft: '[1ps]', marginBottom: '[1ps]' }}))

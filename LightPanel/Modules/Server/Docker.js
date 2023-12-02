@@ -15,7 +15,7 @@ module.exports = class {
   static async getRunningContainers () {
     let data = (await executeCommand(['docker', 'ps', '--format', '{{ json . }},'])).message
 
-    return JSON.parse(`[${data.substring(0, data.length-2)}]`)
+    return (data === undefined) ? [] : JSON.parse(`[${data.substring(0, data.length-2)}]`)
   }
 
   //Get Containers State

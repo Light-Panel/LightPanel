@@ -10,7 +10,7 @@ export default async (id) => {
   const page = document.getElementById('page')
   const script = document.getElementById('script')
 
-  const div = page.appendChild(Component.div({ style: { flexShrink: 0, display: 'flex', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[0.5ps]', width: 'calc(100vw - [12ps])', overflow: 'hidden' }}))
+  const div = page.appendChild(Component.div({ style: { flexShrink: 0, display: 'flex', backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginTop: '[0.5ps]', marginBottom: '[0.5ps]', width: 'calc(100vw - [12ps])', overflow: 'hidden' }}))
   const div2 = div.appendChild(Component.div({ style: { flex: 1 }}))
   const text_name = div2.appendChild(Component.text(FontSize.title2, '', { style: { marginLeft: '[1ps]', marginTop: '[0.75ps]' }}))
   const div3 = div2.appendChild(Component.div({ style: { display: 'flex' }}))

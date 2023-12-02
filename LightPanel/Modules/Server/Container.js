@@ -238,26 +238,59 @@ module.exports = class {
   //Get Container Log
   getContainerLog (id) {
     if (this.logData[id] === undefined) return { error: true, content: 'Log Data Not Found' }
-    else return { error: false, data: this.logData[id].join('\n') }
+    
+		return { error: false, data: this.logData[id].join('\n') }
   }
 
   //Add Container Log
   addContainerLog (id, content) {
     if (this.logData[id] === undefined) return { error: true, content: 'Log Data Not Found' }
-    else {
-      let lines = content.split('\n')
+    
+    let lines = content.split('\n')
 
-      this.logData[id][this.logData[id].length-1]+=lines[0]
+    this.logData[id][this.logData[id].length-1]+=lines[0]
 
-      lines.splice(0, 1)
+    lines.splice(0, 1)
 
-      this.logData[id] = this.logData[id].concat(lines)
+    this.logData[id] = this.logData[id].concat(lines)
        
-      while (this.logData[id].length > 100) this.logData[id].splice(0, 1)
+    while (this.logData[id].length > 100) this.logData[id].splice(0, 1)
 
-      return { error: false }
-    }
+    return { error: false }
   }
+
+	//Get Container Files
+	getContainerFiles (id, path) {
+		if (this.data[id] === undefined) return { error: true, content: 'Container Not Found' }
+
+		if (path === undefined) path = []
+
+		if (!fs.existsSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(path)))) return { error: true, content: 'Path Not Found'}
+    if (!fs.statSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(path))).isDirectory()) return { error: true, content: 'Path Is Not A Directory' }
+
+		return fs.readdirSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(path))).map((item) => {
+			if (fs.statSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(path).concat(item))).isDirectory()) return { type: 'directory', name: item }
+			else return { type: 'file', name: item, size: fs.statSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(path).concat(item))).size }
+		})
+	}
+
+	//Move Container Files
+  moveContainerFiles (id, target, destination) {
+		if (this.data[id] === undefined) return { error: true, content: 'Container Not Found' }
+
+		if (!fs.existsSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(destination)))) return { error: true, content: 'Destination Not Found' }
+		if (!fs.statSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(destination))).isDirectory()) return { error: true, content: 'Destination Is Not A Directory' }
+    
+		target.forEach((item) => {
+      if (fs.existsSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(item)))) {
+        let keys = item.split('/')
+
+				fs.renameSync(getPath(this.#core.path, ['Containers', id, 'Content'].concat(item)), getPath(this.#core.path, ['Containers', id, 'Content'].concat(destination).concat(keys[keys.length-1])))
+			}
+		})
+
+		return { error: false }
+	}
 }
 
 const parseMemoryUsage = require('./Tools/ParseMemoryUsage')

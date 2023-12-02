@@ -95,7 +95,7 @@ function displayFeatures (type) {
 
       addFeature(getTranslation('ui>>狀態'), 'Stats.svg', `Container?id=${id}&feature=state`)
       addFeature(getTranslation('ui>>控制台'), 'Terminal.svg', `Container?id=${id}&feature=console`)
-      addFeature(getTranslation('ui>>檔案管理'), 'Folder.svg', `Container?id=${id}&feature=fileManager`)
+      addFeature(getTranslation('ui>>檔案管理'), 'Directory.svg', `Container?id=${id}&feature=fileManager`)
       addFeature(getTranslation('ui>>設定'), 'Options.svg', `Container?id=${id}&feature=settings`)
     }
   }

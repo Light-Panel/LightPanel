@@ -52,7 +52,10 @@ module.exports = (core, httpServer) => {
         } else if (request.type === 'getContainerLog') {
           if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = core.container.getContainerLog(request.id)
           else response = { error: true, content: 'Permission Denied' }
-        } else if (request.type === 'getAccountInfo') response = core.account.getAccountInfo(session.accountName)
+        } else if (request.type === 'getContainerFiles') {
+          if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = core.container.getContainerFiles(request.id, request.path)
+          else response = { error: true, content: 'Permission Denied' }
+				} else if (request.type === 'getAccountInfo') response = core.account.getAccountInfo(session.accountName)
 
         else if (request.type === 'createContainer') {
           if (core.account.getAccountInfo(session.accountName).permissions.includes('manageContainers')) response = core.container.createContainer(request.name, request.template, request.templateParameters, request.maxCPU, request.maxMemory, request.storage, request.networkPort)
@@ -63,7 +66,10 @@ module.exports = (core, httpServer) => {
 				else if (request.type === 'changeContainerState') {
           if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = await core.container.changeState(request.id)
           else response = { error: true, content: 'Permission Denied' }
-        }
+        } else if (request.type === 'moveContainerFiles') {
+					if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) response = await core.container.moveContainerFiles(request.id, request.target, request.destination)
+          else response = { error: true, content: 'Permission Denied' }
+				}
 
         else if (request.type === 'connectTTY') {
           if (accountInfo.permissions.includes('manageContainers') || accountInfo.containers.includes(request.id)) {

@@ -1,6 +1,6 @@
 const page = document.getElementById('page')
 
-const div = page.appendChild(Component.div({ style: { display: 'flex', marginTop: '[0.5ps]', marginBottom: '[0.5ps]', width: 'calc(100vw - [12ps])', height: 'calc(100vh - [10ps])', overflow: 'hidden' }}))
+const div = page.appendChild(Component.div({ style: { display: 'flex', marginBottom: '[0.5ps]', width: 'calc(100vw - [12ps])', height: 'calc(100vh - [10ps])', overflow: 'hidden' }}))
 const div2 = div.appendChild(Component.div({ style: { flex: 1, backgroundColor: 'var(--mainColor_dark)', border: '[0.1ps] solid var(--mainColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginRight: '[0.5ps]' }}))
 const text_cpu = div2.appendChild(Component.text(FontSize.title3, '', { style: { marginLeft: '[1ps]', marginTop: '[0.75ps]' }}))
 const canvas_cpu = div2.appendChild(Component.canvas({ style: { backgroundColor: 'var(--subColor)', border: '[0.1ps] solid var(--subColor_border)', borderRadius: '[0.5ps]', boxSizing: 'border-box', marginLeft: '[1ps]', marginTop: '[0.5ps]', width: 'calc(100% - [2ps])', height: 'calc(100% - [3.5ps])' }}))

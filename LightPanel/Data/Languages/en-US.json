@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "English",
+    "name": "English (US)",
     "flag": "🇺🇸"
   },
   "content": {
@@ -14,76 +14,40 @@
 
         "- Light Panel -\n\n版本: {version}\n平台: {platform}\n\n面板端口: {port}\n": "- Light Panel -\n\nVersion: {version}\nPlatform: {platform}\n\nPanel Port: {port}\n",
 
-        "正在建構範本 {template} (這可能會花費一段時間)": "Building template {template} (This may take some time)",
-        "無法建構範本 {template} (原因: 參數 {parameter} 的類型錯誤，應該為 <{type}>)": "Can not build template {template} (Reason: Parameter {parameter} had the wrong type，shoud be <{type}>)",
-        "範本構建失敗 {template} (原因: {reason})": "Failed to build template {template} (Reason: {reason})",
-        "成功建構範本 {template} (花費 {time}s)": "Successfully built template {template} (Time {time}s)",
-        
-        "正在啟動伺服器 (端口: {port})": "Starting Server (Port: {port})",
-        "成功啟動伺服器 (花費: {time}ms)": "Successfully Started The Server(Time: {time}ms)",
-        "檢測到 DoS 攻擊，將在未來的 5 分鐘內阻擋來自 {address} 的請求 (平均每秒 {averageRequestPerSecond} 個請求)": "檢測到 DoS 攻擊，將在未來的 5 分鐘內阻擋來自 {address} 的請求 (平均每秒 {averageRequestPerSecond} 個請求)"
+        "正在啟動伺服器 (端口: {port})": "Starting server (Port: {port})",
+        "成功啟動伺服器 (花費: {time}ms)": "Started Server (Time: {time}ms)",
+        "檢測到 DoS 攻擊，將在未來的 5 分鐘內阻擋來自 {address} 的請求 (平均每秒 {averageRequestPerSecond} 個請求)": "DoS attack detected, blocking request from {address} for 5 minutes (Average PPS: {averageRequestPerSecond})"
       },
       "error": {
-        "找不到資料夾 {path}": "Can not found directory {path}",
+        "找不到資料夾 {path}": "Cannot find directory {path}",
         "{path} 不是一個資料夾": "{path} is not a directory",
-        "找不到日誌類型 ${type}": "Can not found log type ${type}"
+        "找不到日誌類型 ${type}": "Cannot find log type ${type}"
       }
     },
     "app": {
       "log": {
         "面板": "Panel",
         
-        "框架加載完成 (花費: {time}ms)": "框架加載完成 (花費: {time}ms)",
-        
-        "連接成功": "連接成功",
-        "- Light Panel -\n\n版本: {version}": "- Light Panel -\n\nVersion: {version}"
+        "框架加載完成 (花費: {time}ms)": "Loaded Framework (Time: {time}ms)"
       },
       "ui": {
-        "未選取": "未選取",
-
-        "更改語言": "Change Language",
-        "成功更改語言至 {language}": "Successfully Changed The Langauge To {language}",
-        "部分內容需刷新頁面才會套用": "Some content requires refreshing the page before it can be<br>applied",
-
         "登入": "Login",
         "帳號名": "Username",
         "密碼": "Password",
-        "無法登入": "Could not login",
-        "請輸入帳號名": "Please enter the username",
-        "請輸入密碼": "Please enter the password",
-        "登入失敗": "Failed to login",
-        "找不到該帳號": "Account not found",
-        "密碼錯誤": "Wrong password",
+        "無法登入": "Unable to login",
+        "請輸入帳號名": "Please type the Username",
+        "請輸入密碼": "Please type the Password",
+        "登入失敗": "Login Failed",
+        "找不到該帳號": "Cannot find your account",
+        "密碼錯誤": "Incorrect Password",
 
-        "容器": "Containers",
-        "範本": "Temlates",
-        "用戶管理": "Users Management",
+        "容器": "Container",
+        "範本": "Sample",
+        "用戶管理": "User Management",
         "設定": "Settings",
 
         "搜尋容器": "Search Container",
-        "創建容器": "Create Container",
-
-        "容器名稱": "Container Name",
-        "容器設定": "Container Settings",
-        "最大 CPU (%)": "Max CPU (%)",
-        "每個核心算作 100%": "Each core count as 100%",
-        "最大記憶體 (MB)": "Max memory (MB)",
-        "網路端口": "Network port",
-        "無法創建容器": "Could not create container",
-        "請入容器名": "Please enter container name",
-        "請選擇一個範本": "Please select a template",
-
-        "狀態": "State",
-        "控制台": "Console",
-        "檔案管理": "File Manager", 
-
-        "idle": "Idle",
-        "running": "Running",
-        "starting": "Starting",
-        "stopping": "Stopping",
-        "記憶體": "Memory",
-        "無法改變容器的狀態": "Chould not change the state of container",
-        "請稍候再試": "Please try again later"
+        "創建容器": "Create Container"
       }
     }
   }
